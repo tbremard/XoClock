@@ -5,7 +5,7 @@ namespace XoClock
     internal class MainViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        TimerModel timerModel;
+        IClock _timerModel;
         string _displayTime;
 
         public string DisplayTime
@@ -24,11 +24,10 @@ namespace XoClock
             }
         }
 
-        public MainViewModel()
+        public MainViewModel(IClock clock)
         {
-            _displayTime = "NA";
-            timerModel = new TimerModel();
-            timerModel.Tick += TimerModel_Tick;
+            _timerModel = clock;
+            _timerModel.Tick += TimerModel_Tick;
         }
 
         private void TimerModel_Tick(object sender, TickEventArgs e)

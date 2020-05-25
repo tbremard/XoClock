@@ -17,7 +17,8 @@ namespace XoClock
             Top = 0;
             double screenWidth = SystemParameters.PrimaryScreenWidth;
             Left = screenWidth-Width;
-            DataContext = new MainViewModel();
+            var clock = new TimerModel();
+            DataContext = new MainViewModel(clock);
         }
     }
 }
