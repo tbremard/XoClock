@@ -6,16 +6,21 @@
         xmlns:local="clr-namespace:XoClock"
         mc:Ignorable="d"
         Title="MainWindow" Height="100" Width="350"
-        BorderThickness="0" WindowStyle="None" AllowsTransparency="True" 
-        ResizeMode="NoResize" Background="Black" Topmost="True"
+        BorderThickness="0" 
+        WindowStyle="None" 
+        AllowsTransparency="True" 
+        Background="Transparent"
+        ResizeMode="NoResize" 
+        Topmost="True"
         Margin="0" Padding="0"
+        ShowInTaskbar="False"
         Loaded="Window_Loaded"
         >
     <Grid>
         <Viewbox Stretch="Uniform" Margin="0">
             <Label TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
                    ClipToBounds="True"  Padding="0" Margin="0" 
-                   Background="Black" Foreground="DarkBlue"
+                   Background="Transparent" Foreground="DarkBlue"
                    Content="{Binding Path=DisplayTime, FallbackValue='08:54:01'}"/>
         </Viewbox>
     </Grid>
