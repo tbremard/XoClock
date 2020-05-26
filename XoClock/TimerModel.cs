@@ -6,7 +6,8 @@ namespace XoClock
     internal class TimerModel : IClock
     {
         public event TickEventHandler Tick;
-        Timer _timer;
+        private readonly Timer _timer;
+
         public TimerModel()
         {
             _timer = new Timer(MyTimerCallback);

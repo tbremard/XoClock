@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XoClock"
         mc:Ignorable="d"
-        Title="MainWindow" Height="100" Width="350"
+        Title="MainWindow" Height="99" Width="270"
         BorderThickness="0" 
         WindowStyle="None" 
         AllowsTransparency="True" 
@@ -16,11 +16,11 @@
         ShowInTaskbar="False"
         Loaded="Window_Loaded"
         >
-    <Grid>
-        <Viewbox Stretch="Uniform" Margin="0">
+    <Grid ClipToBounds="True">
+        <Viewbox Stretch="Uniform" Margin="0" ClipToBounds="True">
             <Label TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
                    ClipToBounds="True"  Padding="0" Margin="0" 
-                   Background="Transparent" Foreground="DarkBlue"
+                   Background="Gray" Foreground="DarkBlue"
                    Content="{Binding Path=DisplayTime, FallbackValue='08:54:01'}"/>
         </Viewbox>
     </Grid>

@@ -32,7 +32,7 @@ namespace XoClock
 
         private void TimerModel_Tick(object sender, TickEventArgs e)
         {
-            DisplayTime = e.Clock.ToLongTimeString();
+            DisplayTime = e.Clock.ToString("HH:mm:ss");
         }
 
         private void OnPropertyChanged(string propertyName)
