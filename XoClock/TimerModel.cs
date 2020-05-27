@@ -17,7 +17,7 @@ namespace XoClock
         void MyTimerCallback(object state)
         {
             var args = new TickEventArgs(DateTime.Now);
-            Tick(this, args);
+            Tick?.Invoke(this, args);
         }
     }
 }
