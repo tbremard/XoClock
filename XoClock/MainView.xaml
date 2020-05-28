@@ -16,9 +16,12 @@
         Margin="0" Padding="0"
         ShowInTaskbar="False"
         Loaded="Window_Loaded"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        MouseLeftButtonUp="Window_MouseLeftButtonUp"
+        MouseMove="Window_MouseMove"
         >
     <Grid>
-        <Viewbox Stretch="Uniform" Margin="0" >
+        <Viewbox Stretch="Uniform" Margin="0" Name="viewbox">
             <Label TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
                    ClipToBounds="True"  Padding="0" Margin="0" 
                     Foreground="DarkBlue"
