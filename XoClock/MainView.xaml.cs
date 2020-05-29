@@ -10,6 +10,7 @@ namespace XoClock
     {
         bool _isMoving = false;
         Point _lastPosition;
+        MainViewModel viewModel;
 
         public MainView()
         {
@@ -22,7 +23,8 @@ namespace XoClock
             double screenWidth = SystemParameters.PrimaryScreenWidth;
             Left = screenWidth-Width;
             var clock = new TimerModel();
-            DataContext = new MainViewModel(clock);
+            viewModel = new MainViewModel(clock);
+            DataContext = viewModel;
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -44,6 +46,16 @@ namespace XoClock
                 Left += currentPosition.X - _lastPosition.X;
                 Top += currentPosition.Y - _lastPosition.Y;
             }
+        }
+
+        private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            viewModel.SwitchMode();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            viewModel.KeyDown(e);
         }
     }
 }

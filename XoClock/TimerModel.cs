@@ -3,15 +3,29 @@ using System.Threading;
 
 namespace XoClock
 {
-    internal class TimerModel : IClock
+    public class TimerModel : IClock
     {
         public event TickEventHandler Tick;
         private readonly Timer _timer;
+        private int _period;
+
+        public int Period
+        {
+            get
+            {
+                return _period;
+            }
+            set
+            {
+                _period = value;
+                _timer.Change(0, value);
+            }
+        }
 
         public TimerModel()
         {
             _timer = new Timer(MyTimerCallback);
-            _timer.Change(0, 1000);
+            Period = 1000;
         }
 
         void MyTimerCallback(object state)

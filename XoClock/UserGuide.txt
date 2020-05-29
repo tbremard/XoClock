@@ -1,0 +1,7 @@
+﻿XoClock by Thierry Bremard
+2 modes : 
++Mode Clock 
++Mode Chronometer
+
+In mode chronometer, press 'space' to start / stop / reset chronometer
+
