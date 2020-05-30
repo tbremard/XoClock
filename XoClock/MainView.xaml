@@ -11,7 +11,7 @@
         WindowStyle="None" 
         AllowsTransparency="True" 
         Background="Gray"
-        ResizeMode="CanResizeWithGrip" 
+        ResizeMode="NoResize" 
         Topmost="True"
         Margin="0" Padding="0"
         ShowInTaskbar="False"
@@ -22,13 +22,10 @@
         MouseDoubleClick="Window_MouseDoubleClick"
         KeyDown="Window_KeyDown"
         >
-    <Grid>
         <Viewbox Stretch="Uniform" Margin="0" Name="viewbox">
             <Label TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
                    ClipToBounds="True"  Padding="0" Margin="0" 
                     Foreground="DarkBlue"
                    Content="{Binding Path=DisplayTime, FallbackValue='08:54:01'}"/>
         </Viewbox>
-    </Grid>
-
 </Window>

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 
 namespace XoClock
@@ -56,6 +57,57 @@ namespace XoClock
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             viewModel.KeyDown(e);
+            switch (e.Key)
+            {
+                case Key.R:
+                    SwitchResizeMode();
+                    break;
+                case Key.T:
+                    SwitchTopMost();
+                    break;
+                case Key.F1:
+                    this.WindowState = WindowState.Maximized;
+                    this.ShowInTaskbar = false;
+                    Topmost = _lastTopMost;
+                    break;
+                case Key.F2:
+                    this.WindowState = WindowState.Normal;
+                    this.ShowInTaskbar = false;
+                    Topmost = _lastTopMost;
+                    break;
+                case Key.F3:
+                    this.WindowState = WindowState.Minimized;
+                    this.ShowInTaskbar = true;
+                    Topmost = false;
+                    break;
+                case Key.Subtract:
+                    if(Opacity>0.4)
+                    this.Opacity -= 0.1;
+                    break;
+                case Key.Add:
+                    if (Opacity <= 1)
+                        Opacity += 0.1;
+                    break;
+            }
+
+        }
+        bool _lastTopMost=true;
+        private void SwitchTopMost()
+        {
+            Topmost = !Topmost;
+            _lastTopMost = Topmost;
+        }
+
+        private void SwitchResizeMode()
+        {
+            if(this.ResizeMode == ResizeMode.NoResize)
+            {
+                ResizeMode = ResizeMode.CanResizeWithGrip;
+            }
+            else
+            {
+                ResizeMode = ResizeMode.NoResize;
+            }
         }
     }
 }

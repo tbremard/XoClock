@@ -97,13 +97,15 @@ namespace XoClock
 
         internal void KeyDown(KeyEventArgs e)
         {
-            if(Mode != ClockMode.Chronometer)
+            switch (e.Key)
             {
-                return;
-            }
-            if(e.Key == Key.Space)
-            {
-                SwitchChronometerStatus();
+                case Key.Space:
+                    if (Mode == ClockMode.Chronometer)
+                    {
+                        SwitchChronometerStatus();
+                    }
+                    break;
+
             }
         }
 
