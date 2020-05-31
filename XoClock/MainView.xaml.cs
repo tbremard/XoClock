@@ -1,16 +1,16 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 
 namespace XoClock
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainView.xaml
     /// </summary>
     public partial class MainView : Window
     {
         bool _isMoving = false;
         Point _lastPosition;
+        bool _lastTopMost = true;
         MainViewModel viewModel;
 
         public MainView()
@@ -88,10 +88,13 @@ namespace XoClock
                     if (Opacity <= 1)
                         Opacity += 0.1;
                     break;
+                case Key.X:
+                    Application.Current.Shutdown();
+                    break;
             }
 
         }
-        bool _lastTopMost=true;
+
         private void SwitchTopMost()
         {
             Topmost = !Topmost;

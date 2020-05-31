@@ -13,6 +13,7 @@ F2: Normal
 F3: Minimize
 + : Increase Opacity
 - : Decrease Opacity
+x : exit program
 
 DoubleClick: switch mode between clock and chronometer
 In chronometer mode only:

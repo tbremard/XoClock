@@ -66,9 +66,14 @@ namespace XoClock
                         break;
                 }
                 int centiSecond = chronometerValue.Milliseconds / 10;
-                s = chronometerValue.Hours.ToString("D2")   +":" + 
-                    chronometerValue.Minutes.ToString("D2") +":" +
-                    chronometerValue.Seconds.ToString("D2") +"." +
+
+                if (chronometerValue.Hours > 0)
+                    s += chronometerValue.Hours.ToString("D2") + ":";
+
+                if (chronometerValue.Minutes > 0)
+                    s += chronometerValue.Minutes.ToString("D2") + ":";
+
+                s += chronometerValue.Seconds.ToString("D2") +"." +
                     centiSecond.ToString("D2");
             }
             DisplayTime = s;
