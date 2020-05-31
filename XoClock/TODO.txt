@@ -1,7 +1,4 @@
-﻿
-display non 0 digits in chronometer mode
-mouse wheel to set opacity
-configure background color, foreground color
+﻿configure background color, foreground color
 
 
 set alarms via right click

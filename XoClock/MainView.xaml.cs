@@ -81,18 +81,28 @@ namespace XoClock
                     Topmost = false;
                     break;
                 case Key.Subtract:
-                    if(Opacity>0.4)
-                    this.Opacity -= 0.1;
+                    OpacityDecrease();
                     break;
                 case Key.Add:
-                    if (Opacity <= 1)
-                        Opacity += 0.1;
+                    OpacityIncrease();
                     break;
                 case Key.X:
                     Application.Current.Shutdown();
                     break;
             }
 
+        }
+
+        private void OpacityIncrease()
+        {
+            if (Opacity <= 1)
+                Opacity += 0.1;
+        }
+
+        private void OpacityDecrease()
+        {
+            if (Opacity > 0.4)
+                this.Opacity -= 0.1;
         }
 
         private void SwitchTopMost()
@@ -110,6 +120,18 @@ namespace XoClock
             else
             {
                 ResizeMode = ResizeMode.NoResize;
+            }
+        }
+
+        private void Window_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if(e.Delta>0)
+            {
+                OpacityIncrease();
+            }
+            else
+            {
+                OpacityDecrease();
             }
         }
     }
