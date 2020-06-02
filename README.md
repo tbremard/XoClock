@@ -8,9 +8,9 @@ Chronometer mode available with double click
 # Demo
 
 Time Mode
-![Time](https://github.com/tbremard/XoClock/blob/master/XoClock/ScreenShot/time.jpg "Time mode")
+![Time](XoClock/ScreenShot/time.jpg "Time mode")
 
 
 Chronometer Mode:
-![Chrono](https://github.com/tbremard/XoClock/blob/master/XoClock/ScreenShot/chronometer.jpg "Chronometer mode")
+![Chrono](XoClock/ScreenShot/chronometer.jpg "Chronometer mode")
 
