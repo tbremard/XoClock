@@ -59,6 +59,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ClockMode.cs" />
     <Compile Include="TickEventArgs.cs" />
     <Compile Include="TimerModel.cs" />
     <Page Include="MainView.xaml">
