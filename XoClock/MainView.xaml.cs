@@ -71,6 +71,7 @@ namespace XoClock
                     Topmost = _lastTopMost;
                     break;
                 case Key.F2:
+                case Key.Escape:
                     this.WindowState = WindowState.Normal;
                     this.ShowInTaskbar = false;
                     Topmost = _lastTopMost;

@@ -4,12 +4,6 @@ using System.Windows.Input;
 
 namespace XoClock
 {
-    public enum ChronometerStatus
-    {
-        NotStarted,
-        Running,
-        Stopped
-    }
     internal class MainViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -71,9 +65,9 @@ namespace XoClock
                     s += chronometerValue.Hours.ToString("D2") + ":";
 
                 if (chronometerValue.Minutes > 0)
-                    s += chronometerValue.Minutes.ToString("D2") + ":";
+                    s += chronometerValue.Minutes.ToString("D2") + "'";
 
-                s += chronometerValue.Seconds.ToString("D2") +"." +
+                s += chronometerValue.Seconds.ToString("D2") +"\"" +
                     centiSecond.ToString("D2");
             }
             DisplayTime = s;
