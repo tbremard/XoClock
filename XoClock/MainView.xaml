@@ -6,11 +6,10 @@
         xmlns:local="clr-namespace:XoClock"
         mc:Ignorable="d"
         Title="MainWindow" Height="99" Width="300"
-        BorderThickness="2"
+        BorderThickness="5"
         BorderBrush="Black"
         WindowStyle="None" 
         AllowsTransparency="True" 
-        Background="Gray"
         ResizeMode="NoResize" 
         Topmost="True"
         Margin="0" Padding="0"
@@ -23,10 +22,16 @@
         MouseDoubleClick="Window_MouseDoubleClick"
         KeyDown="Window_KeyDown"
         >
-        <Viewbox Stretch="Uniform" Margin="0" Name="viewbox">
-            <Label TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
-                   ClipToBounds="True"  Padding="0" Margin="0" 
-                    Foreground="DarkBlue"
+    <Viewbox Stretch="Uniform" Margin="0" Name="viewbox">
+            <Label Name="Content"
+                   TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   ClipToBounds="True"  Padding="2, 0, 2, 0" Margin="0" 
+                   Foreground="DarkBlue"
+                   FontFamily="./Fonts/#Software Tester 7"
                    Content="{Binding Path=DisplayTime, FallbackValue='08:54:01'}"/>
         </Viewbox>
+    <Window.Background>
+        <ImageBrush ImageSource="Resources/black-gradient.jpg" TileMode="Tile" />
+    </Window.Background>
 </Window>
+    

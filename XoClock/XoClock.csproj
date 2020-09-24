@@ -13,6 +13,35 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Fonts\braciola ms.ttf" />
+    <None Remove="Fonts\DesignerBlock.TTF" />
+    <None Remove="Fonts\software_tester_7.ttf" />
+    <None Remove="Fonts\Terminator.ttf" />
+    <None Remove="Resources\back.jpg" />
+    <None Remove="Resources\black-gradient.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Fonts\braciola ms.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Fonts\DesignerBlock.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Fonts\software_tester_7.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Fonts\Terminator.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\back.jpg" />
+    <Resource Include="Resources\black-gradient.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="UserGuide.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

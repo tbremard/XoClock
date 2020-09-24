@@ -4,6 +4,5 @@
              xmlns:local="clr-namespace:XoClock"
              StartupUri="MainView.xaml">
     <Application.Resources>
-         
     </Application.Resources>
 </Application>
