@@ -1,5 +1,8 @@
-﻿using System.Windows;
+﻿using System.Configuration;
+using System.Windows;
 using System.Windows.Input;
+using Point = System.Windows.Point;
+using System.Windows.Media;
 
 namespace XoClock
 {
@@ -16,6 +19,14 @@ namespace XoClock
         public MainView()
         {
             InitializeComponent();
+            LoadColor();
+        }
+
+        private void LoadColor()
+        {
+            string htmlColor = ConfigurationManager.AppSettings.Get("FontColor");
+            var myColor = (Color)ColorConverter.ConvertFromString(htmlColor);
+            Content.Foreground = new SolidColorBrush(myColor);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
