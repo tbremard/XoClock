@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "XoClock": {
+      "commandName": "Project",
+      "commandLineArgs": "/c startchrono"
+    }
+  }
+}
