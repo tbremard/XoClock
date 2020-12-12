@@ -94,36 +94,37 @@ namespace XoClock
             }
         }
 
-        internal void KeyDown(KeyEventArgs e)
-        {
-            switch (e.Key)
-            {
-                case Key.Space:
-                    if (Mode == ClockMode.Chronometer)
-                    {
-                        SwitchChronometerStatus();
-                    }
-                    break;
-
-            }
-        }
-
-        private void SwitchChronometerStatus()
+        public void SwitchChronometerStatus()
         {
             switch(_chronometerStatus)
             {
                 case ChronometerStatus.NotStarted:
-                    _chronometerStatus = ChronometerStatus.Running;
-                    _startedTimestamp = DateTime.Now;
+                    StartChrono();
                     break;
                 case ChronometerStatus.Running:
-                    _chronometerStatus = ChronometerStatus.Stopped;
-                    _stoppedTimestamp = DateTime.Now;
+                    StopChrono();
                     break;
                 case ChronometerStatus.Stopped:
-                    _chronometerStatus = ChronometerStatus.NotStarted;
+                    ResetChrono();
                     break;
             }
+        }
+
+        public void ResetChrono()
+        {
+            _chronometerStatus = ChronometerStatus.NotStarted;
+        }
+
+        public void StopChrono()
+        {
+            _chronometerStatus = ChronometerStatus.Stopped;
+            _stoppedTimestamp = DateTime.Now;
+        }
+
+        public void StartChrono()
+        {
+            _chronometerStatus = ChronometerStatus.Running;
+            _startedTimestamp = DateTime.Now;
         }
     }
 }

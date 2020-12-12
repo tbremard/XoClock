@@ -3,6 +3,9 @@ using System.Windows;
 using System.Windows.Input;
 using Point = System.Windows.Point;
 using System.Windows.Media;
+using System.Threading;
+using NLog;
+using System;
 
 namespace XoClock
 {
@@ -11,10 +14,12 @@ namespace XoClock
     /// </summary>
     public partial class MainView : Window
     {
+        private static ILogger _log = LogManager.GetCurrentClassLogger();
         bool _isMoving = false;
         Point _lastPosition;
         bool _lastTopMost = true;
         MainViewModel viewModel;
+        PipeServer server;
 
         public MainView()
         {
@@ -33,10 +38,22 @@ namespace XoClock
         {
             Top = 0;
             double screenWidth = SystemParameters.PrimaryScreenWidth;
-            Left = screenWidth-Width;
+            Left = screenWidth - Width;
             var clock = new TimerModel();
             viewModel = new MainViewModel(clock);
             DataContext = viewModel;
+            var serverThread = new Thread(StartServer);
+            serverThread.Start();
+        }
+
+        private void StartServer()
+        {
+            server = new PipeServer(viewModel);
+            bool isAlive = true;
+            do
+            {
+                server.OpenPort();
+            } while (isAlive);
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -54,9 +71,16 @@ namespace XoClock
         {
             if (_isMoving)
             {
-                Point currentPosition = e.GetPosition(this);
-                Left += currentPosition.X - _lastPosition.X;
-                Top += currentPosition.Y - _lastPosition.Y;
+                try
+                {
+                    Point currentPosition = e.GetPosition(this);
+                    Left += currentPosition.X - _lastPosition.X;
+                    Top += currentPosition.Y - _lastPosition.Y;
+                }
+                catch(Exception ex)
+                {
+                    _log.Error(ex);
+                }
             }
         }
 
@@ -67,9 +91,15 @@ namespace XoClock
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            viewModel.KeyDown(e);
             switch (e.Key)
             {
+                case Key.Space:
+                    if (viewModel.Mode == ClockMode.Chronometer)
+                    {
+                        viewModel.SwitchChronometerStatus();
+                    }
+                    break;
+
                 case Key.R:
                     SwitchResizeMode();
                     break;

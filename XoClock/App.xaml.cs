@@ -19,20 +19,17 @@ namespace XoClock
                 {
                     string command = args[2];
                     Execute(command);
+                    Shutdown();
                 }
-                this.Shutdown();
             }
         }
 
         private void Execute(string commandText)
         {
-            var commandTable = new Dictionary<string, ICommand>();
-            commandTable.Add("STARTCHRONO", new StartChronoCommand());
-            string upper = commandText.Trim().ToUpper();
-            if(commandTable.ContainsKey(upper))
+            string upperCommand = commandText.Trim().ToUpper();
+            if (PipelineClientService.Instance.ConnectToServer())
             {
-                ICommand command = commandTable[upper];
-                command.Execute(null);
+                PipelineClientService.Instance.SendCommand(upperCommand);
             }
         }
     }

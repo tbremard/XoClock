@@ -17,6 +17,7 @@
     <None Remove="Fonts\DesignerBlock.TTF" />
     <None Remove="Fonts\software_tester_7.ttf" />
     <None Remove="Fonts\Terminator.ttf" />
+    <None Remove="NLog.config" />
     <None Remove="Resources\back.jpg" />
     <None Remove="Resources\black-gradient.jpg" />
   </ItemGroup>
@@ -37,6 +38,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="NLog" Version="4.7.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Resources\back.jpg" />
     <Resource Include="Resources\black-gradient.jpg" />
   </ItemGroup>
