@@ -24,3 +24,15 @@ Mouse
 	DoubleClick: switch mode between clock and chronometer
 	LeftButtonPress: Drag window/ change location
 }
+
+XoClock can also controlled by a second instance receiving command line:
+start a first XoClock process
+open a command line prompt, and execute folowing commands:
+-----------------------
+xoclock /c mode_chrono
+xoclock /c start_chrono
+xoclock /c stop_chrono
+xoclock /c reset_chrono
+xoclock /c mode_clock
+xoclock /c kill
+-----------------------

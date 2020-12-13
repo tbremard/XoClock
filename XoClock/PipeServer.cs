@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.IO.Pipes;
 using System.Threading;
+using System.Windows;
 using NLog;
 
 namespace XoClock
@@ -39,8 +40,27 @@ namespace XoClock
 
                     if(command == XoClockCommand.START_CHRONO.ToString())
                     {
-                        _log.Debug("starting chronometer.......");
                         _viewModel.StartChrono();
+                    }
+                    if (command == XoClockCommand.STOP_CHRONO.ToString())
+                    {
+                        _viewModel.StopChrono();
+                    }
+                    if (command == XoClockCommand.RESET_CHRONO.ToString())
+                    {
+                        _viewModel.ResetChrono();
+                    }
+                    if (command == XoClockCommand.MODE_CHRONO.ToString())
+                    {
+                        _viewModel.SetMode(ClockMode.Chronometer);
+                    }
+                    if (command == XoClockCommand.MODE_CLOCK.ToString())
+                    {
+                        _viewModel.SetMode(ClockMode.Clock);
+                    }
+                    if (command == XoClockCommand.KILL.ToString())
+                    {
+                        Application.Current.Dispatcher.InvokeShutdown();
                     }
                 }
                 catch (IOException e)

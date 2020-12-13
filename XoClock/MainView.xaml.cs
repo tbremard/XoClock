@@ -43,6 +43,7 @@ namespace XoClock
             viewModel = new MainViewModel(clock);
             DataContext = viewModel;
             var serverThread = new Thread(StartServer);
+            serverThread.IsBackground = true;
             serverThread.Start();
         }
 

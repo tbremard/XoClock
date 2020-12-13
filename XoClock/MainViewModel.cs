@@ -1,11 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Windows.Input;
+using NLog;
 
 namespace XoClock
 {
     internal class MainViewModel : INotifyPropertyChanged
     {
+        private static ILogger _log = LogManager.GetCurrentClassLogger();
         public event PropertyChangedEventHandler PropertyChanged;
         IClock _timerModel;
         string _displayTime;
@@ -83,14 +84,28 @@ namespace XoClock
         {
             if(Mode == ClockMode.Clock)
             {
-                Mode = ClockMode.Chronometer;
-                _timerModel.Period = 10;
-                _chronometerStatus = ChronometerStatus.NotStarted;
+                SetMode(ClockMode.Chronometer);
             }
             else
             {
-                Mode = ClockMode.Clock;
-                _timerModel.Period = 1000;
+                SetMode(ClockMode.Clock);
+            }
+        }
+
+        public void SetMode(ClockMode mode)
+        {
+            Mode = mode;
+            switch (mode)
+            {
+                case ClockMode.Clock:
+                    _timerModel.Period = 1000;
+                    break;
+                case ClockMode.Chronometer:
+                    _timerModel.Period = 10;
+                    _chronometerStatus = ChronometerStatus.NotStarted;
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -112,17 +127,20 @@ namespace XoClock
 
         public void ResetChrono()
         {
+            _log.Debug("reset chronometer...");
             _chronometerStatus = ChronometerStatus.NotStarted;
         }
 
         public void StopChrono()
         {
+            _log.Debug("stoping chronometer...");
             _chronometerStatus = ChronometerStatus.Stopped;
             _stoppedTimestamp = DateTime.Now;
         }
 
         public void StartChrono()
         {
+            _log.Debug("starting chronometer...");
             _chronometerStatus = ChronometerStatus.Running;
             _startedTimestamp = DateTime.Now;
         }
