@@ -6,6 +6,8 @@
     <UseWPF>true</UseWPF>
 	  <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 	  <ApplicationIcon>clock.ico</ApplicationIcon>
+	  <AssemblyVersion>1.2.0.0</AssemblyVersion>
+	  <Copyright>Thierry Bremard</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
