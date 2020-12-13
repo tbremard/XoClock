@@ -1,4 +1,3 @@
-﻿configure background color, foreground color
-
-
-set alarms via right click
+﻿Configure background color, foreground color
+Set alarms via right click
+Get output via pipe
