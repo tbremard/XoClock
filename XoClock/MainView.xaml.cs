@@ -31,7 +31,8 @@ namespace XoClock
         {
             string htmlColor = ConfigurationManager.AppSettings.Get("FontColor");
             var myColor = (Color)ColorConverter.ConvertFromString(htmlColor);
-            Content.Foreground = new SolidColorBrush(myColor);
+            LblTime.Foreground = new SolidColorBrush(myColor);
+            LblDate.Foreground = new SolidColorBrush(myColor);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -100,7 +101,9 @@ namespace XoClock
                         viewModel.SwitchChronometerStatus();
                     }
                     break;
-
+                case Key.D:
+                    SwitchDisplayDate();
+                    break;
                 case Key.R:
                     SwitchResizeMode();
                     break;
@@ -133,7 +136,19 @@ namespace XoClock
                     Application.Current.Shutdown();
                     break;
             }
+        }
 
+        private void SwitchDisplayDate()
+        {
+            if (LblDate.IsVisible)
+            {
+                LblDate.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                LblDate.Visibility = Visibility.Visible;
+            }
+            _log.Debug("SwitchDisplayDate: "+ LblDate.Visibility);
         }
 
         private void OpacityIncrease()

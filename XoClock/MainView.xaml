@@ -23,13 +23,23 @@
         KeyDown="Window_KeyDown"
         >
     <Viewbox Stretch="Uniform" Margin="0" Name="viewbox">
-            <Label Name="Content"
+        <StackPanel>
+            <Label Name="LblTime"
                    TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
                    ClipToBounds="True"  Padding="2, 0, 2, 0" Margin="0" 
                    Foreground="DarkBlue"
                    FontFamily="./Fonts/#Software Tester 7"
                    Content="{Binding Path=DisplayTime, FallbackValue='08:54:01'}"/>
-        </Viewbox>
+            <Label Name="LblDate"
+                   TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   ClipToBounds="True"  Padding="2, 0, 2, 0" Margin="0" 
+                   Foreground="DarkBlue"
+                   FontFamily="./Fonts/#Software Tester 7"
+                   FontSize="6"
+                   Content="{Binding Path=DisplayDate, FallbackValue='2022-01-01'}"/>
+        </StackPanel>
+
+    </Viewbox>
     <Window.Background>
         <ImageBrush ImageSource="Resources/black-gradient.jpg" TileMode="Tile" />
     </Window.Background>

@@ -31,6 +31,8 @@ namespace XoClock
             }
         }
 
+        public string DisplayDate { get; private set; }
+
         public MainViewModel(IClock clock)
         {
             _timerModel = clock;
@@ -44,6 +46,7 @@ namespace XoClock
             if (Mode == ClockMode.Clock)
             {
                 s = e.Clock.ToString("HH:mm:ss");
+                DisplayDate = e.Clock.ToString("yyyy-MM-dd");
             }
             if(Mode== ClockMode.Chronometer)
             {
@@ -127,20 +130,20 @@ namespace XoClock
 
         public void ResetChrono()
         {
-            _log.Debug("reset chronometer...");
+            _log.Debug("Reset chronometer...");
             _chronometerStatus = ChronometerStatus.NotStarted;
         }
 
         public void StopChrono()
         {
-            _log.Debug("stoping chronometer...");
+            _log.Debug("Stoping chronometer...");
             _chronometerStatus = ChronometerStatus.Stopped;
             _stoppedTimestamp = DateTime.Now;
         }
 
         public void StartChrono()
         {
-            _log.Debug("starting chronometer...");
+            _log.Debug("Starting chronometer...");
             _chronometerStatus = ChronometerStatus.Running;
             _startedTimestamp = DateTime.Now;
         }
