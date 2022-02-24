@@ -8,6 +8,7 @@ In mode chronometer, press 'space' to start / stop / reset chronometer
 Commands:
 KeyBoard:
 {
+	D : Show/Hide the Date (YYYY-MM-DD)
 	R : ResizeMode/NoResizeMode
 	T : TopMost true/false
 	F1: Maximize

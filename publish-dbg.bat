@@ -1,0 +1,1 @@
+dotnet publish XoClock_2019.sln -c Debug
