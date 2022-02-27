@@ -17,6 +17,7 @@
         Loaded="Window_Loaded"
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
         MouseLeftButtonUp="Window_MouseLeftButtonUp"
+        MouseLeave="Window_MouseLeave"
         MouseWheel="Window_MouseWheel"
         MouseMove="Window_MouseMove"
         MouseDoubleClick="Window_MouseDoubleClick"

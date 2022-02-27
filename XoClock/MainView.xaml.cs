@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System.Threading;
 using NLog;
 using System;
+using System.Runtime.InteropServices;
 
 namespace XoClock
 {
@@ -31,8 +32,9 @@ namespace XoClock
         {
             string htmlColor = ConfigurationManager.AppSettings.Get("FontColor");
             var myColor = (Color)ColorConverter.ConvertFromString(htmlColor);
-            LblTime.Foreground = new SolidColorBrush(myColor);
-            LblDate.Foreground = new SolidColorBrush(myColor);
+            var brush = new SolidColorBrush(myColor);
+            LblTime.Foreground = brush;
+            LblDate.Foreground = brush;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -58,15 +60,25 @@ namespace XoClock
             } while (isAlive);
         }
 
+
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _isMoving = true;
-            _lastPosition = e.GetPosition(this); 
+//            int cursorX = (int)(Left + Width / 2);
+//            int cursorY = (int)(Top + Height / 2);
+//            XoMouse.SetCursorPos(cursorX, cursorY);
+            // _lastPosition = e.GetPosition(this);
+            _lastPosition = XoMouse.GetCursorPos();
+            Left = _lastPosition.X - Width / 2;
+            Top = _lastPosition.Y - Height / 2;
+//            int cursorY = (int)(Top + Height / 2);
+            _log.Debug("_isMoving: "+ _isMoving + " from: "+_lastPosition);
         }
 
         private void Window_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             _isMoving = false;
+            _log.Debug("_isMoving: " + _isMoving);
         }
 
         private void Window_MouseMove(object sender, MouseEventArgs e)
@@ -75,9 +87,12 @@ namespace XoClock
             {
                 try
                 {
-                    Point currentPosition = e.GetPosition(this);
+                    // Point currentPosition = e.GetPosition(this);
+                    Point currentPosition = XoMouse.GetCursorPos();
+                    _log.Debug("Moving to position: " + currentPosition);
                     Left += currentPosition.X - _lastPosition.X;
                     Top += currentPosition.Y - _lastPosition.Y;
+                    _lastPosition = currentPosition;
                 }
                 catch(Exception ex)
                 {
@@ -133,8 +148,20 @@ namespace XoClock
                     OpacityIncrease();
                     break;
                 case Key.X:
-                    Application.Current.Shutdown();
                     break;
+                case Key.Up:
+                    Top--;
+                    break;
+                case Key.Down:
+                    Top++;
+                    break;
+                case Key.Left:
+                    Left--;
+                    break;
+                case Key.Right:
+                    Left++;
+                    break;
+
             }
         }
 
@@ -191,6 +218,11 @@ namespace XoClock
             {
                 OpacityDecrease();
             }
+        }
+
+        private void Window_MouseLeave(object sender, MouseEventArgs e)
+        {
+            _log.Debug("MouseLeave!");
         }
     }
 }

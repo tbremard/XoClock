@@ -10,6 +10,7 @@ namespace XoClock
         public event PropertyChangedEventHandler PropertyChanged;
         IClock _timerModel;
         string _displayTime;
+        string _displayDate;
         ChronometerStatus _chronometerStatus;
         public ClockMode Mode { get; private set; }
         DateTime _startedTimestamp;
@@ -21,7 +22,7 @@ namespace XoClock
             {
                 return _displayTime;
             }
-            set
+            private set
             {
                 if(value != _displayTime)
                 {
@@ -31,7 +32,21 @@ namespace XoClock
             }
         }
 
-        public string DisplayDate { get; private set; }
+        public string DisplayDate 
+        {
+            get
+            {
+                return _displayDate;
+            }
+            private set
+            {
+                if (value != _displayDate)
+                {
+                    _displayDate = value;
+                    OnPropertyChanged("DisplayDate");
+                }
+            }
+        }
 
         public MainViewModel(IClock clock)
         {
