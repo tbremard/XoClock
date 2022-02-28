@@ -56,10 +56,15 @@ namespace XoClock
             bool isAlive = true;
             do
             {
-                server.OpenPort();
+                if (!server.OpenPort())
+                {
+                    _log.Error("cannot open pipe server. Already instance running ?");
+                    return;
+                }
+                server.HandleClient();
+                server.Close();
             } while (isAlive);
         }
-
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
