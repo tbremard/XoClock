@@ -79,8 +79,15 @@ jobs:
       run: dotnet test $env:Test_Project_Path
 
     - name: publish
-      run: dotnet publish $env:Solution_Name
-
+      run: dotnet publish $env:Solution_Name -c Release -r win-x64 --output bin
+      
+    - name: Archive Release
+      uses: thedoctor0/zip-release@master
+      with:
+        type: 'zip'
+        filename: 'XoClock.windows-amd64.zip'
+        path: 'bin'
+        exclusions: '*.git* /*node_modules/* .editorconfig'
 
     - name: release
       uses: actions/create-release@v1
@@ -89,7 +96,7 @@ jobs:
           draft: false
           prerelease: false
           tag_name: 2022-03-01
-          release_name: XoClock_v2022_testr
+          release_name: Automatic_XoClock_v2022
           body: New Automatic Release
       env:
         GITHUB_TOKEN: ${{ github.token }}
