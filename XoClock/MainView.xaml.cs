@@ -155,20 +155,50 @@ namespace XoClock
                 case Key.X:
                     break;
                 case Key.Up:
-                    Top--;
+                    if (verticalCounter>0)
+                    {
+                        verticalCounter = 0;
+                    }
+                    verticalCounter--;
+                    if (verticalCounter<-5)
+                    {
+                        Top -= 10;
+                    }
+                    else
+                    {
+                        Top--;
+                    }
+
                     break;
                 case Key.Down:
-                    Top++;
+                    if (verticalCounter < 0)
+                    {
+                        verticalCounter = 0;
+                    }
+                    verticalCounter++;
+                    if (verticalCounter > 5)
+                    {
+                        Top += 10;
+                    }
+                    else
+                    {
+                        Top++;
+                    }
                     break;
                 case Key.Left:
+                    verticalCounter = 0;
                     Left--;
                     break;
                 case Key.Right:
+                    verticalCounter = 0;
                     Left++;
                     break;
 
             }
         }
+
+        int verticalCounter = 0;
+        int horizontalCounter = 0;
 
         private void SwitchDisplayDate()
         {
