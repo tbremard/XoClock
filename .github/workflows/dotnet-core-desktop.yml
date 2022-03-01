@@ -88,6 +88,7 @@ jobs:
       with:
           draft: false
           prerelease: false
+          tag: 2022-03-01
           release_name: XoClock_v2022_testr
           body: New Automatic Release
       env:
