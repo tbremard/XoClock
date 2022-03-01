@@ -49,8 +49,8 @@ jobs:
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
     env:
-      Solution_Name:     XoClock_2019.sln                        # Replace with your solution name, i.e. MyWpfApp.sln.
-      Test_Project_Path: XoClock/XoClock.csproj              # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
+      Solution_Name:     XoClock.sln       # Replace with your solution name, i.e. MyWpfApp.sln.
+      Test_Project_Path: XoClock/XoClock.csproj # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
 
     steps:
     - name: Checkout
@@ -58,30 +58,18 @@ jobs:
       with:
         fetch-depth: 0
 
-    # Install the .NET Core workload
     - name: Install .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
 
-    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
-#    - name: Setup MSBuild.exe
-#      uses: microsoft/setup-msbuild@2008f912f56e61277eefaac6d1888b750582aa16
-
-    # Restore the application to populate the obj folder with RuntimeIdentifiers
-#    - name: Build Application
-#      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
-#      env:
-#        Configuration: ${{ matrix.configuration }}
-
-    # Execute all unit tests in the solution
     - name: Execute unit tests
       run: dotnet test $env:Test_Project_Path
 
     - name: publish
-      run: dotnet publish XoClock_2019.sln -c Release --output ./bin
+      run: dotnet publish XoClock.sln -c Release --output ./bin
       
-    - name: Archive Release
+    - name: Create Zip Archive
       uses: thedoctor0/zip-release@master
       with:
         type: 'zip'
@@ -89,7 +77,7 @@ jobs:
         path: './bin'
         exclusions: '*.git* /*node_modules/* .editorconfig'
 
-    - name: release
+    - name: Create Release
       uses: actions/create-release@v1
       id: create_release
       with:
@@ -101,7 +89,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ github.token }}
         
-    - name: upload windows artifact
+    - name: Upload zip on release url
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ github.token }}
