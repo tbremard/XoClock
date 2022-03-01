@@ -85,7 +85,7 @@ jobs:
       uses: thedoctor0/zip-release@master
       with:
         type: 'zip'
-        filename: 'XoClock.windows-amd64.zip'
+        filename: 'XoClock.win-x64.zip'
         path: './bin'
         exclusions: '*.git* /*node_modules/* .editorconfig'
 
@@ -107,6 +107,6 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./bin/XoClock.windows-amd64.zip
-        asset_name: XoClock.windows-amd64.zip
+        asset_path: XoClock.win-x64.zip
+        asset_name: XoClock.win-x64.zip
         asset_content_type: application/zip          
