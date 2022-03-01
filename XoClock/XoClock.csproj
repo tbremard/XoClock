@@ -8,6 +8,8 @@
 	  <ApplicationIcon>clock.ico</ApplicationIcon>
 	  <AssemblyVersion>1.2.0.0</AssemblyVersion>
 	  <Copyright>Thierry Bremard</Copyright>
+	  <Authors>Thierry Bremard - t.bremard@gmail.com</Authors>
+	  <Description>Desktop Clock and Chronometer</Description>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
