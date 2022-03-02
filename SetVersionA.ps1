@@ -6,29 +6,15 @@ $x=Get-Location
 Write-Host "CurrentDirectory: "$x.Path
 $csprojPath = $x.Path+"\"+$csprojPath
 Write-Host ("filePath: " + $csprojPath)
-
 $splitNumber = $newVersion.Split(".")
 if( $splitNumber.Count -eq 4 )
 {
-	$majorNumber = $splitNumber[0]
-	$minorNumber = $splitNumber[1]
-	$revisionNumber = $splitNumber[3]
-	$myBuildNumber = (Get-Date).Year + ((Get-Date).Month * 31) + (Get-Date).Day
-	$myBuildNumber = $majorNumber + "." + $minorNumber + "." + $myBuildNumber + "." + $revisionNumber
-	$filePath = $csprojPath
 	$xml=New-Object XML
-	$xml.Load($filePath)
-	$FileVersionNode = $xml.Project.PropertyGroup.FileVersion
-	if ($FileVersionNode -eq $null) {
-		# If you have a new project and have not changed the FileVersion number the FileVersion tag may not exist
-		$FileVersionNode = $xml.CreateElement("FileVersion")
-		$xml.Project.PropertyGroup.AppendChild($FileVersionNode)
-		Write-Host "FileVersion XML tag added to the csproj"
-	}
-	$xml.Project.PropertyGroup.FileVersion = $myBuildNumber
-	$xml.Save($filePath)
-
-	Write-Host "Updated csproj "$csprojPath" and set to FileVersion "$myBuildNumber
+	$xml.Load($csprojPath)
+	$xml.Project.PropertyGroup[0].FileVersion = $newVersion
+	$xml.Project.PropertyGroup[0].AssemblyVersion = $newVersion
+	$xml.Save($csprojPath)
+	Write-Host "Updated csproj "$csprojPath" and set to FileVersion "$newVersion
 }
 else
 {
