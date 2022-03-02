@@ -36,14 +36,12 @@ function UpdateAssemblyInfo()
         $tmpFile = $file.FullName + ".tmp"
         $fileContent = Get-Content $file.FullName -encoding utf8
         Write-Host ([Environment]::NewLine)
-        Write-Host("Updating attributes")
-        Write-Host("-------------------")
         $fileContent = TryReplace "AssemblyVersion" $assemblyVersion;
         $fileContent = TryReplace "FileVersion" $FileVersion;        
         Write-Host ([Environment]::NewLine)
         Write-Host("Saving changes...")
         Set-Content $tmpFile -value $fileContent -encoding utf8   
-        Move-Item $tmpFile $file.FullName -force
+        #Move-Item $tmpFile $file.FullName -force
     }
     Write-Host("============================================================")
     Write-Host("Done!")
@@ -54,11 +52,9 @@ function TryReplace($attributeKey, $value)
     if($value)
     {
         $containsAttributeKey = $fileContent | %{$_ -match $attributeKey}
-
         If($containsAttributeKey -contains $true)
         {
             Write-Host("Updating '$attributeKey'...")
-
             if($file.Extension -eq ".vb")
             {
                 $attribute = $attributeKey + '("' + $value + '")';
@@ -67,7 +63,6 @@ function TryReplace($attributeKey, $value)
             {
                 $attribute = $attributeKey + '(@"' + $value + '")';
             }
-
             $fileContent = $fileContent -replace ($attributeKey +'\(@{0,1}".*"\)'), $attribute
         }
         else
@@ -108,7 +103,6 @@ function WriteCustomAttributes($customAttributes)
     foreach($customAttribute in ($customAttributes -split ';'))
     {
         $customAttributeKey, $customAttributeValue = $customAttribute.Split('=')
-      
         $fileContent = TryReplace $customAttributeKey $customAttributeValue
     }
     return $fileContent
