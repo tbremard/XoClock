@@ -4,13 +4,13 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
-	  <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-	  <ApplicationIcon>clock.ico</ApplicationIcon>
-	  <AssemblyVersion>2022.03.0.0</AssemblyVersion>
-	  <Copyright>Thierry Bremard - t.bremard@gmail.com</Copyright>
-	  <Authors>Thierry Bremard - t.bremard@gmail.com</Authors>
-	  <Description>Desktop Clock and Chronometer</Description>
-	  <FileVersion>2022.03.0.0</FileVersion>
+	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	<ApplicationIcon>clock.ico</ApplicationIcon>
+	<AssemblyVersion>2022.03.0.0</AssemblyVersion>
+	<Copyright>Thierry Bremard - t.bremard@gmail.com</Copyright>
+	<Authors>Thierry Bremard - t.bremard@gmail.com</Authors>
+	<Description>Desktop Clock and Chronometer</Description>
+	<FileVersion>2022.03.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
