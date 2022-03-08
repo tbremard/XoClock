@@ -41,7 +41,12 @@ jobs:
        Write-Host("VersionNumber: "+$VersionNumber)      
        .\SetCsprojVersion.ps1 .\XoClock\XoClock.csproj $VersionNumber
        Write-Host("::set-output name={VersionNumber}::{$VersionNumber}")
-    
+       echo "::set-output name=VersionNumberr::{$VersionNumber}"
+      - name: Check outputs
+        shell: pwsh
+        run: echo ${{ steps.set_version.outputs.VersionNumberr }} 
+        run: echo ${{ steps.set_version.outputs.VersionNumber }} 
+        
     - name: Execute unit tests
       run: dotnet test $env:Test_Project_Path
 
