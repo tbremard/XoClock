@@ -31,7 +31,7 @@ jobs:
         dotnet-version: 3.1.101
 
     - name: SetVersion Number
-#      id: set_version
+      id: SerVersionNumber
       shell: pwsh
       run: |
        $currentDate=Get-Date -Format "yyyy.MM.dd"
@@ -44,8 +44,8 @@ jobs:
     - name: Check outputs
       shell: pwsh
       run: |
-       echo ${{ steps.set_version.outputs.VersionNumberr }} 
-       echo ${{ steps.set_version.outputs.VersionNumber }} 
+       echo ${{ steps.SerVersionNumber.outputs.VersionNumberr }} 
+       echo ${{ steps.SerVersionNumber.outputs.VersionNumber }} 
         
     - name: Execute unit tests
       run: dotnet test $env:Test_Project_Path
