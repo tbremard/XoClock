@@ -39,7 +39,7 @@ jobs:
        Write-Host("VersionNumber: "+$VersionNumber)      
        .\SetCsprojVersion.ps1 .\XoClock\XoClock.csproj $VersionNumber
        Write-Host("::set-output name={A}::{$VersionNumber}")
-       echo       "::set-output name={B}::{$VersionNumber}"
+       echo "::set-output name={B}::{$VersionNumber}"
        
     - name: Check outputs
       shell: pwsh
