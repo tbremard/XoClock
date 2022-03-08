@@ -39,12 +39,12 @@ jobs:
        Write-Host("VersionNumber: "+$VersionNumber)      
        .\SetCsprojVersion.ps1 .\XoClock\XoClock.csproj $VersionNumber
        Write-Host("::set-output name={VersionNumber}::{$VersionNumber}")
-       echo "::set-output name=VersionNumberr::{$VersionNumber}"
+       echo       "::set-output name={VersionNumberr}::{$VersionNumber}"
        
     - name: Check outputs
       shell: pwsh
       run: |
-       echo ${{ steps.SerVersionNumber.outputs.VersionNumberr }} 
+       echo ${ steps.SerVersionNumber.outputs.VersionNumberr }
        echo ${{ steps.SerVersionNumber.outputs.VersionNumber }} 
         
     - name: Execute unit tests
