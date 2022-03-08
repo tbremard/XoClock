@@ -37,8 +37,8 @@ jobs:
       run: |
        Write-Host("xxxxxxxxxxxx")
        $currentDate=Get-Date -Format "yyyy.MM.dd"
-       $VersionNumber=$currentDate+${{ github.run_number }}   
-       Write-Host("VersionNumber: "+$x)      
+       $VersionNumber=$currentDate+"."+${{ github.run_number }}   
+       Write-Host("VersionNumber: "+$VersionNumber)      
        .\SetCsprojVersion.ps1 .\XoClock\XoClock.csproj $VersionNumber
     
     - name: Execute unit tests
