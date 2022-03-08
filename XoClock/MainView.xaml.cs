@@ -45,12 +45,12 @@ namespace XoClock
             var clock = new TimerModel();
             viewModel = new MainViewModel(clock);
             DataContext = viewModel;
-            var serverThread = new Thread(StartServer);
+            var serverThread = new Thread(StartPipeServer);
             serverThread.IsBackground = true;
             serverThread.Start();
         }
 
-        private void StartServer()
+        private void StartPipeServer()
         {
             server = new PipeServer(viewModel);
             bool isAlive = true;
@@ -69,14 +69,9 @@ namespace XoClock
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _isMoving = true;
-//            int cursorX = (int)(Left + Width / 2);
-//            int cursorY = (int)(Top + Height / 2);
-//            XoMouse.SetCursorPos(cursorX, cursorY);
-            // _lastPosition = e.GetPosition(this);
             _lastPosition = XoMouse.GetCursorPos();
-            Left = _lastPosition.X - Width / 2;
-            Top = _lastPosition.Y - Height / 2;
-//            int cursorY = (int)(Top + Height / 2);
+//            Left = _lastPosition.X - Width / 2;
+//            Top = _lastPosition.Y - Height / 2;
             _log.Debug("_isMoving: "+ _isMoving + " from: "+_lastPosition);
         }
 
@@ -109,17 +104,32 @@ namespace XoClock
         private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             viewModel.SwitchMode();
+            if (viewModel.Mode == ClockMode.Clock)
+            {
+                LblDate.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                LblDate.Visibility = Visibility.Collapsed;
+            }
         }
 
+        bool _isShiftDown = false;
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            switch (e.Key)
+            Key key = e.Key;
+            _log.Debug("KeyDown: "+key);
+            switch (key)
             {
                 case Key.Space:
                     if (viewModel.Mode == ClockMode.Chronometer)
                     {
                         viewModel.SwitchChronometerStatus();
                     }
+                    break;
+                case Key.LeftShift:
+                case Key.RightShift:
+                    _isShiftDown = true;
                     break;
                 case Key.D:
                     SwitchDisplayDate();
@@ -128,7 +138,14 @@ namespace XoClock
                     SwitchResizeMode();
                     break;
                 case Key.T:
-                    SwitchTopMost();
+                    if (_isShiftDown)
+                    {
+                        MoveToTop();
+                    }
+                    else
+                    {
+                        SwitchTopMost();
+                    }
                     break;
                 case Key.F1:
                     this.WindowState = WindowState.Maximized;
@@ -153,8 +170,14 @@ namespace XoClock
                     OpacityIncrease();
                     break;
                 case Key.X:
+                    Close();
                     break;
                 case Key.Up:
+                    if (_isShiftDown)
+                    {
+                        MoveToTop();
+                        break;
+                    }
                     if (verticalCounter>0)
                     {
                         verticalCounter = 0;
@@ -168,9 +191,13 @@ namespace XoClock
                     {
                         Top--;
                     }
-
                     break;
                 case Key.Down:
+                    if (_isShiftDown)
+                    {
+                        MoveToBottom();
+                        break;
+                    }
                     if (verticalCounter < 0)
                     {
                         verticalCounter = 0;
@@ -186,15 +213,46 @@ namespace XoClock
                     }
                     break;
                 case Key.Left:
+                    if (_isShiftDown)
+                    {
+                        MoveToLeft();
+                        break;
+                    }
                     verticalCounter = 0;
                     Left--;
                     break;
                 case Key.Right:
+                    if (_isShiftDown)
+                    {
+                        MoveToRight();
+                        break;
+                    }
                     verticalCounter = 0;
                     Left++;
                     break;
-
             }
+        }
+
+        private void MoveToLeft()
+        {
+            Left = 0;
+        }
+
+        private void MoveToRight()
+        {
+            double screenWidth = SystemParameters.PrimaryScreenWidth;
+            Left = screenWidth - Width;
+        }
+
+        private void MoveToBottom()
+        {
+            double screenHeight = SystemParameters.PrimaryScreenHeight;
+            Top = screenHeight - Height;
+        }
+
+        private void MoveToTop()
+        {
+            Top = 0;
         }
 
         int verticalCounter = 0;
@@ -258,6 +316,19 @@ namespace XoClock
         private void Window_MouseLeave(object sender, MouseEventArgs e)
         {
             _log.Debug("MouseLeave!");
+        }
+
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+            Key key = e.Key;
+            _log.Debug("KeyUp: " + key);
+            switch (key)
+            {
+                case Key.LeftShift:
+                case Key.RightShift:
+                    _isShiftDown = false;
+                    break;
+            }
         }
     }
 }

@@ -8,11 +8,11 @@ namespace XoClock
     {
         private static ILogger _log = LogManager.GetCurrentClassLogger();
         public event PropertyChangedEventHandler PropertyChanged;
+        public ClockMode Mode { get; private set; }
         IClock _timerModel;
         string _displayTime;
         string _displayDate;
         ChronometerStatus _chronometerStatus;
-        public ClockMode Mode { get; private set; }
         DateTime _startedTimestamp;
         DateTime _stoppedTimestamp;
 
@@ -78,16 +78,14 @@ namespace XoClock
                         chronometerValue = _stoppedTimestamp - _startedTimestamp;
                         break;
                 }
-                int centiSecond = chronometerValue.Milliseconds / 10;
-
+                s = string.Empty;
                 if (chronometerValue.Hours > 0)
                     s += chronometerValue.Hours.ToString("D2") + ":";
-
                 if (chronometerValue.Minutes > 0)
                     s += chronometerValue.Minutes.ToString("D2") + "'";
-
+                int centiseconds = chronometerValue.Milliseconds / 10;
                 s += chronometerValue.Seconds.ToString("D2") +"\"" +
-                    centiSecond.ToString("D2");
+                    centiseconds.ToString("D2");
             }
             DisplayTime = s;
         }

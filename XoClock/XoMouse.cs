@@ -3,10 +3,6 @@ using System.Windows; // Or use whatever point class you like for the implicit c
 
 namespace XoClock
 {
-
-    /// <summary>
-    /// Struct representing a point.
-    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct POINT
     {
@@ -37,7 +33,5 @@ namespace XoClock
 
         [DllImport("User32.dll")]
         public static extern bool SetCursorPos(int X, int Y);
-
-
     }
 }

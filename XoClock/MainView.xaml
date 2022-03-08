@@ -22,6 +22,7 @@
         MouseMove="Window_MouseMove"
         MouseDoubleClick="Window_MouseDoubleClick"
         KeyDown="Window_KeyDown"
+        KeyUp="Window_KeyUp"    
         >
     <Viewbox Stretch="Uniform" Margin="0" Name="viewbox">
         <StackPanel>
