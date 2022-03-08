@@ -38,14 +38,12 @@ jobs:
        $VersionNumber=$currentDate+"."+${{github.run_number}}   
        Write-Host("VersionNumber: "+$VersionNumber)      
        .\SetCsprojVersion.ps1 .\XoClock\XoClock.csproj $VersionNumber
-       Write-Host("::set-output name=A::$VersionNumber")
-       echo "::set-output name=B::$VersionNumber"
+       Write-Host("::set-output name=VersionNumber::$VersionNumber")
        
     - name: Check outputs
       shell: pwsh
       run: |
-       echo ${{ steps.SerVersionNumber.outputs.B }}
-       echo ${{ steps.SerVersionNumber.outputs.A }} 
+       echo ${{ steps.SerVersionNumber.outputs.VersionNumber}}
         
     - name: Execute unit tests
       run: dotnet test $env:Test_Project_Path
@@ -57,7 +55,7 @@ jobs:
       uses: thedoctor0/zip-release@master
       with:
         type: 'zip'
-        filename: 'XoClock.${{ steps.set_version.outputs.VersionNumber }}.zip'
+        filename: 'XoClock.${{ steps.SerVersionNumber.outputs.VersionNumber}}.zip'
         path: './bin'
         exclusions: '*.git* /*node_modules/* .editorconfig'
 
