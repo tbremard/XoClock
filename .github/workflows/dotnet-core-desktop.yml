@@ -32,7 +32,8 @@ jobs:
       with:
         dotnet-version: 3.1.101
 
-    - name: PatchVersion Number
+    - name: SetVersion Number
+      id: set_version
       shell: pwsh
       run: |
        $currentDate=Get-Date -Format "yyyy.MM.dd"
@@ -51,7 +52,7 @@ jobs:
       uses: thedoctor0/zip-release@master
       with:
         type: 'zip'
-        filename: 'XoClock.win-x64.zip'
+        filename: 'XoClock.${{ steps.set_version.outputs.VersionNumber }}.zip'
         path: './bin'
         exclusions: '*.git* /*node_modules/* .editorconfig'
 
