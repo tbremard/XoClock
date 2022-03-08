@@ -1,34 +1,3 @@
-# This workflow will build, test, sign and package a WPF or Windows Forms desktop application
-# built on .NET Core.
-#
-# To configure this workflow:
-#
-# 1. Configure environment variables
-# GitHub sets default environment variables for every workflow run.  
-# Replace the variables relative to your project in the "env" section below.
-# 
-# 2. Signing
-# Generate a signing certificate in the Windows Application 
-# Packaging Project or add an existing signing certificate to the project.
-# Next, use PowerShell to encode the .pfx file using Base64 encoding
-# by running the following Powershell script to generate the output string:
-# 
-# $pfx_cert = Get-Content '.\SigningCertificate.pfx' -Encoding Byte
-# [System.Convert]::ToBase64String($pfx_cert) | Out-File 'SigningCertificate_Encoded.txt'
-#
-# Open the output file, SigningCertificate_Encoded.txt, and copy the
-# string inside. Then, add the string to the repo as a GitHub secret
-# and name it "Base64_Encoded_Pfx."
-# For more information on how to configure your signing certificate for 
-# this workflow, refer to https://github.com/microsoft/github-actions-for-desktop-apps#signing
-#
-# Finally, add the signing certificate password to the repo as a secret and name it "Pfx_Key".
-# See "Build the Windows Application Packaging project" below to see how the secret is used.
-#
-# For more information on GitHub Actions, refer to https://github.com/features/actions
-# For a complete CI/CD sample to get started with GitHub Action workflows for Desktop Applications,
-# refer to https://github.com/microsoft/github-actions-for-desktop-apps
-
 name: .NET Core Desktop
 
 on:
@@ -37,6 +6,10 @@ on:
   pull_request:
     branches: [ master ]
 
+variables:
+  VERSION_NUMBER: "1.1.1.1"
+  CI_DEBUG_TRACE: "true"
+    
 jobs:
 
   build:
@@ -65,7 +38,11 @@ jobs:
 
     - name: PatchVersion Number
       shell: pwsh
-      run: .\SetCsprojVersion.ps1 .\XoClock\XoClock.csproj 2022.3.8.10
+      run: |
+      $currentDate=Get-Date -Format "yyyy.MM.dd"
+      $VersionNumber=$currentDate+${{ github.run_number }}   
+      Write-Host("VersionNumber: "+$x)      
+      .\SetCsprojVersion.ps1 .\XoClock\XoClock.csproj $VersionNumber
     
     - name: Execute unit tests
       run: dotnet test $env:Test_Project_Path
