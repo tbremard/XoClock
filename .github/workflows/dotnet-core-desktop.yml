@@ -38,14 +38,14 @@ jobs:
        $VersionNumber=$currentDate+"."+${{github.run_number}}   
        Write-Host("VersionNumber: "+$VersionNumber)      
        .\SetCsprojVersion.ps1 .\XoClock\XoClock.csproj $VersionNumber
-       Write-Host("::set-output name={VersionNumber}::{$VersionNumber}")
-       echo       "::set-output name={VersionNumberr}::{$VersionNumber}"
+       Write-Host("::set-output name={A}::{$VersionNumber}")
+       echo       "::set-output name={B}::{$VersionNumber}"
        
     - name: Check outputs
       shell: pwsh
       run: |
-       echo ${ steps.SerVersionNumber.outputs.VersionNumberr }
-       echo ${{ steps.SerVersionNumber.outputs.VersionNumber }} 
+       echo ${{ steps.SerVersionNumber.outputs.B }}
+       echo ${{ steps.SerVersionNumber.outputs.A }} 
         
     - name: Execute unit tests
       run: dotnet test $env:Test_Project_Path
