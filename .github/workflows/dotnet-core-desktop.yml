@@ -38,8 +38,8 @@ jobs:
        $VersionNumber=$currentDate+"."+${{github.run_number}}   
        Write-Host("VersionNumber: "+$VersionNumber)      
        .\SetCsprojVersion.ps1 .\XoClock\XoClock.csproj $VersionNumber
-#       Write-Host("::set-output name={VersionNumber}::{$VersionNumber}")
-#       echo "::set-output name=VersionNumberr::{$VersionNumber}"
+       Write-Host("::set-output name={VersionNumber}::{$VersionNumber}")
+       echo "::set-output name=VersionNumberr::{$VersionNumber}"
        
     - name: Check outputs
       shell: pwsh
