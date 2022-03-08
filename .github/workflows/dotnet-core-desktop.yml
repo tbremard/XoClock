@@ -5,11 +5,7 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-
-variables:
-  VERSION_NUMBER: "1.1.1.1"
-  CI_DEBUG_TRACE: "true"
-    
+   
 jobs:
 
   build:
