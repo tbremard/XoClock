@@ -35,11 +35,11 @@ jobs:
     - name: PatchVersion Number
       shell: pwsh
       run: |
-       Write-Host("xxxxxxxxxxxx")
        $currentDate=Get-Date -Format "yyyy.MM.dd"
        $VersionNumber=$currentDate+"."+${{ github.run_number }}   
        Write-Host("VersionNumber: "+$VersionNumber)      
        .\SetCsprojVersion.ps1 .\XoClock\XoClock.csproj $VersionNumber
+       Write-Host("::set-output name={VersionNumber}::{$VersionNumber}")
     
     - name: Execute unit tests
       run: dotnet test $env:Test_Project_Path
