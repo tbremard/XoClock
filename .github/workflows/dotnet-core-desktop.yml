@@ -7,9 +7,7 @@ on:
     branches: [ master ]
    
 jobs:
-
   build:
-
     strategy:
       matrix:
         configuration: [Release]
@@ -37,10 +35,10 @@ jobs:
       shell: pwsh
       run: |
        $currentDate=Get-Date -Format "yyyy.MM.dd"
-       $VersionNumber=$currentDate+"."+${{ github.run_number }}   
+       $VersionNumber=$currentDate+"."+${{github.run_number}}   
        Write-Host("VersionNumber: "+$VersionNumber)      
        .\SetCsprojVersion.ps1 .\XoClock\XoClock.csproj $VersionNumber
-       Write-Host("::set-output name={VersionNumber}::{$VersionNumber}")
+#       Write-Host("::set-output name={VersionNumber}::{$VersionNumber}")
 #       echo "::set-output name=VersionNumberr::{$VersionNumber}"
        
       - name: Check outputs
