@@ -6,7 +6,7 @@ using System.Windows.Media;
 using System.Threading;
 using NLog;
 using System;
-using System.Runtime.InteropServices;
+using System.Windows.Threading;
 
 namespace XoClock
 {
@@ -21,6 +21,10 @@ namespace XoClock
         bool _lastTopMost = true;
         MainViewModel viewModel;
         PipeServer server;
+        bool _isShiftDown = false;
+        bool _isCtrlDown = false;
+        bool _copyMode = false;
+        Key _lastKey = Key.None;
 
         public MainView()
         {
@@ -31,6 +35,7 @@ namespace XoClock
         private void LoadColor()
         {
             string htmlColor = ConfigurationManager.AppSettings.Get("FontColor");
+            _log.Debug("Loaded color from config file: FontColor="+htmlColor);
             var myColor = (Color)ColorConverter.ConvertFromString(htmlColor);
             var brush = new SolidColorBrush(myColor);
             LblTime.Foreground = brush;
@@ -114,11 +119,15 @@ namespace XoClock
             }
         }
 
-        bool _isShiftDown = false;
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             Key key = e.Key;
-            _log.Debug("KeyDown: "+key);
+            if (key == _lastKey)
+            {
+                return;
+            }
+            _lastKey = key;
+            _log.Debug("KeyDown: " + key);
             switch (key)
             {
                 case Key.Space:
@@ -127,12 +136,39 @@ namespace XoClock
                         viewModel.SwitchChronometerStatus();
                     }
                     break;
+                case Key.LeftCtrl:
+                case Key.RightCtrl:
+                    _isCtrlDown = true;
+                    break;
                 case Key.LeftShift:
                 case Key.RightShift:
                     _isShiftDown = true;
                     break;
+                case Key.C:
+                    if (_isCtrlDown)
+                    {
+                        if (viewModel.Mode == ClockMode.Chronometer)
+                        {
+                            Clipboard.SetText(LblTime.Content.ToString());
+                        }
+                        else
+                        {
+                            _copyMode = true;
+                        }
+                    }
+                    break;
                 case Key.D:
-                    SwitchDisplayDate();
+                    if (_copyMode)
+                    {
+                        string date = LblDate.Content.ToString();
+                        _log.Debug("Copy to clipboard: "+date);
+                        Clipboard.SetText(date);
+                        FlashBorder();
+                    }
+                    else
+                    {
+                        SwitchDisplayDate();
+                    }
                     break;
                 case Key.R:
                     SwitchResizeMode();
@@ -141,6 +177,12 @@ namespace XoClock
                     if (_isShiftDown)
                     {
                         MoveToTop();
+                    }
+                    else if (_copyMode)
+                    {
+                        string buffer = LblTime.Content.ToString();
+                        _log.Debug("Copy to clipboard: " + buffer);
+                        Clipboard.SetText(buffer);
                     }
                     else
                     {
@@ -233,6 +275,35 @@ namespace XoClock
             }
         }
 
+        private void FlashBorder()
+        {
+            _log.Debug("FlashBorder()");
+            Brush currentBrush = BorderBrush;
+            var highlight = new SolidColorBrush();
+            highlight.Color = Colors.Aqua;
+
+            BorderBrush = highlight;
+
+            Dispatcher.InvokeAsync(() =>
+            {
+                Thread.Sleep(300);
+                BorderBrush = currentBrush; //  FLASH DO NOT WWWWWWWWWWWWWWWWWWWWWWORK
+            });
+            /*
+            Dispatcher.InvokeAsync(() => );
+            Dispatcher.InvokeAsync(() => 
+            );
+/*
+            Dispatcher.Invoke(()=> 
+            { 
+                BorderBrush = highlight; 
+                Thread.Sleep(300);
+                BorderBrush = currentBrush;
+
+            }, DispatcherPriority.Render);
+*/
+        }
+
         private void MoveToLeft()
         {
             Left = 0;
@@ -318,16 +389,24 @@ namespace XoClock
             _log.Debug("MouseLeave!");
         }
 
+
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
+            _lastKey = Key.None;
             Key key = e.Key;
-            _log.Debug("KeyUp: " + key);
+            _log.Debug("KeyUp  : " + key);
             switch (key)
             {
                 case Key.LeftShift:
                 case Key.RightShift:
                     _isShiftDown = false;
                     break;
+                case Key.LeftCtrl:
+                case Key.RightCtrl:
+                    _isCtrlDown = false;
+                    _copyMode = false;
+                    break;
+
             }
         }
     }
