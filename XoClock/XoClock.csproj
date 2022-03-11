@@ -10,6 +10,7 @@
     <Description>Desktop Clock and Chronometer</Description>
     <FileVersion>2022.3.8.1</FileVersion>
     <AssemblyVersion>2022.3.8.1</AssemblyVersion>
+    <Version>2022.3.8.1</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>

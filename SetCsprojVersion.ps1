@@ -13,6 +13,7 @@ if( $splitNumber.Count -eq 4 )
 	$xml.Load($csprojPath)
 	$xml.Project.PropertyGroup[0].FileVersion = $newVersion
 	$xml.Project.PropertyGroup[0].AssemblyVersion = $newVersion
+	$xml.Project.PropertyGroup[0].Version = $newVersion
 	$xml.Save($csprojPath)
 	Write-Host "Updated csproj "$csprojPath" and set to FileVersion "$newVersion
 }
