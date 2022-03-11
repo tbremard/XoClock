@@ -8,9 +8,9 @@
     <Copyright>Thierry Bremard - t.bremard@gmail.com</Copyright>
     <Authors>Thierry Bremard - t.bremard@gmail.com</Authors>
     <Description>Desktop Clock and Chronometer</Description>
-    <FileVersion>2022.3.8.1</FileVersion>
-    <AssemblyVersion>2022.3.8.1</AssemblyVersion>
-    <Version>2022.3.8.1</Version>
+    <FileVersion>2022.03.11.1</FileVersion>
+    <AssemblyVersion>2022.03.11.1</AssemblyVersion>
+    <Version>2022.03.11.1</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
