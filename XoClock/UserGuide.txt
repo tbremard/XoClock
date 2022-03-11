@@ -1,13 +1,22 @@
-﻿XoClock by Thierry Bremard
+﻿XoClock 
+by Thierry Bremard
+
 2 modes : 
 +Mode Clock 
 +Mode Chronometer
-
-In mode chronometer, press 'space' to start / stop / reset chronometer
+Double click to switch mode
 
 Commands:
-KeyBoard:
+KeyBoard: (letters are not case sensitive - ie d=D)
 {
+    <SHIFT> <Left>  : Move Clock to bottom left of screen
+    <SHIFT> <Rigth> : Move Clock to bottom right of screen
+    <SHIFT> <Top>   : Move Clock to Top of screen
+    <SHIFT> <Down>  : Move Clock to Bottom of screen
+    <CTRL> C  : [in chrono mode] Copy current value to clipboard
+    <CTRL> C D: [in clock mode]  Copy Date to clipboard (Press Ctrl, Press and release C, Press and release D, release Ctrl)
+    <CTRL> C T: [in clock mode]  Copy Time to clipboard
+	<SPACE>   : [in chrono mode] start / stop / reset chronometer
 	D : Show/Hide the Date (YYYY-MM-DD)
 	R : ResizeMode/NoResizeMode
 	T : TopMost true/false
@@ -21,14 +30,14 @@ KeyBoard:
 }
 Mouse
 {
-	Wheel: set opacity
-	DoubleClick: switch mode between clock and chronometer
-	LeftButtonPress: Drag window/ change location
+	Wheel          : set opacity
+	DoubleClick    : switch mode between clock and chronometer
+	LeftButtonPress: Drag window and change location
 }
 
 XoClock can also controlled by a second instance receiving command line:
-start a first XoClock process
-open a command line prompt, and execute folowing commands:
+Start a first XoClock process
+Open a command line prompt, and execute folowing commands:
 -----------------------
 xoclock /c mode_chrono
 xoclock /c start_chrono

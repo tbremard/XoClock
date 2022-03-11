@@ -4,12 +4,12 @@ using System.Windows; // Or use whatever point class you like for the implicit c
 namespace XoClock
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct POINT
+    public struct NATIVE_POINT
     {
         public int X;
         public int Y;
 
-        public static implicit operator Point(POINT point)
+        public static implicit operator Point(NATIVE_POINT point)
         {
             return new Point(point.X, point.Y);
         }
@@ -17,21 +17,16 @@ namespace XoClock
 
     public static class XoMouse
     {
-        /// <summary>
-        /// Retrieves the cursor's position, in screen coordinates.
-        /// </summary>
-        /// <see>See MSDN documentation for further information.</see>
         [DllImport("user32.dll")]
-        public static extern bool GetCursorPos(out POINT lpPoint);
+        private static extern bool GetCursorPos(out NATIVE_POINT lpPoint);
+        [DllImport("User32.dll")]
+        public static extern bool SetCursorPos(int X, int Y);
 
         public static Point GetCursorPos()
         {
-            POINT lpPoint;
+            NATIVE_POINT lpPoint;
             bool success = GetCursorPos(out lpPoint);
             return lpPoint;
         }
-
-        [DllImport("User32.dll")]
-        public static extern bool SetCursorPos(int X, int Y);
     }
 }

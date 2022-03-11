@@ -145,6 +145,7 @@ namespace XoClock
                     _isShiftDown = true;
                     break;
                 case Key.C:
+                    //if (Keyboard.Modifiers == ModifierKeys.Control) < could also use this
                     if (_isCtrlDown)
                     {
                         if (viewModel.Mode == ClockMode.Chronometer)
@@ -286,7 +287,7 @@ namespace XoClock
 
             Dispatcher.InvokeAsync(() =>
             {
-                Thread.Sleep(300);
+                Thread.Sleep(100);
                 BorderBrush = currentBrush; //  FLASH DO NOT WWWWWWWWWWWWWWWWWWWWWWORK
             });
             /*
