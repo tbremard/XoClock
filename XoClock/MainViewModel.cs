@@ -63,7 +63,7 @@ namespace XoClock
                 s = e.Clock.ToString("HH:mm:ss");
                 DisplayDate = e.Clock.ToString("yyyy-MM-dd");
             }
-            if(Mode== ClockMode.Chronometer)
+            if(Mode== ClockMode.Chrono)
             {
                 TimeSpan chronometerValue=TimeSpan.Zero;
                 switch(_chronometerStatus)
@@ -100,7 +100,7 @@ namespace XoClock
         {
             if(Mode == ClockMode.Clock)
             {
-                SetMode(ClockMode.Chronometer);
+                SetMode(ClockMode.Chrono);
             }
             else
             {
@@ -116,7 +116,7 @@ namespace XoClock
                 case ClockMode.Clock:
                     _timerModel.Period = 1000;
                     break;
-                case ClockMode.Chronometer:
+                case ClockMode.Chrono:
                     _timerModel.Period = 10;
                     _chronometerStatus = ChronometerStatus.NotStarted;
                     break;

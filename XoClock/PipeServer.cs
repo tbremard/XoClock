@@ -80,7 +80,7 @@ namespace XoClock
             }
             if (command == XoClockCommand.MODE_CHRONO.ToString())
             {
-                _viewModel.SetMode(ClockMode.Chronometer);
+                _viewModel.SetMode(ClockMode.Chrono);
             }
             if (command == XoClockCommand.MODE_CLOCK.ToString())
             {

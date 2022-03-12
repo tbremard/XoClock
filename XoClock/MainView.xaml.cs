@@ -131,7 +131,7 @@ namespace XoClock
             switch (key)
             {
                 case Key.Space:
-                    if (viewModel.Mode == ClockMode.Chronometer)
+                    if (viewModel.Mode == ClockMode.Chrono)
                     {
                         viewModel.SwitchChronometerStatus();
                     }
@@ -148,7 +148,7 @@ namespace XoClock
                     //if (Keyboard.Modifiers == ModifierKeys.Control) < could also use this
                     if (_isCtrlDown)
                     {
-                        if (viewModel.Mode == ClockMode.Chronometer)
+                        if (viewModel.Mode == ClockMode.Chrono)
                         {
                             Clipboard.SetText(LblTime.Content.ToString());
                         }

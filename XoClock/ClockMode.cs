@@ -3,6 +3,6 @@
     public enum ClockMode
     {
         Clock,
-        Chronometer
+        Chrono
     }
 }
