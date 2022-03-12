@@ -10,11 +10,11 @@ namespace XoClock
     internal class PipeServer
     {
         private static ILogger _log = LogManager.GetCurrentClassLogger();
-        private MainViewModel _viewModel;
+        private TimerModel _viewModel;
 
         NamedPipeServerStream _pipeServer;
 
-        public PipeServer(MainViewModel viewModel)
+        public PipeServer(TimerModel viewModel)
         {
             this._viewModel = viewModel;
         }

@@ -10,16 +10,13 @@ using System.Windows.Threading;
 
 namespace XoClock
 {
-    /// <summary>
-    /// Interaction logic for MainView.xaml
-    /// </summary>
     public partial class MainView : Window
     {
         private static ILogger _log = LogManager.GetCurrentClassLogger();
         bool _isMoving = false;
         Point _lastPosition;
         bool _lastTopMost = true;
-        MainViewModel viewModel;
+        TimerModel viewModel;
         PipeServer server;
         bool _isShiftDown = false;
         bool _isCtrlDown = false;
@@ -44,15 +41,20 @@ namespace XoClock
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Top = 0;
-            double screenWidth = SystemParameters.PrimaryScreenWidth;
-            Left = screenWidth - Width;
-            var clock = new TimerModel();
-            viewModel = new MainViewModel(clock);
+            PositionOnTopLeftCorner();
+            var clock = new TimerCore();
+            viewModel = new TimerModel(clock);
             DataContext = viewModel;
             var serverThread = new Thread(StartPipeServer);
             serverThread.IsBackground = true;
             serverThread.Start();
+        }
+
+        private void PositionOnTopLeftCorner()
+        {
+            Top = 0;
+            double screenWidth = SystemParameters.PrimaryScreenWidth;
+            Left = screenWidth - Width;
         }
 
         private void StartPipeServer()
