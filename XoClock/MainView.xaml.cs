@@ -16,7 +16,7 @@ namespace XoClock
         bool _isMoving = false;
         Point _lastPosition;
         bool _lastTopMost = true;
-        TimerModel viewModel;
+        TimerModel model;
         PipeServer server;
         bool _isShiftDown = false;
         bool _isCtrlDown = false;
@@ -41,25 +41,30 @@ namespace XoClock
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             LoadColor();
-            PositionOnTopLeftCorner();
-            var clock = new TimerCore();
-            viewModel = new TimerModel(clock);
-            DataContext = viewModel;
-            var serverThread = new Thread(StartPipeServer);
+            PositionOnTopRightCorner();
+            var core = new TimerCore();
+            model = new TimerModel(core);
+            DataContext = model;
+            StartCommandServerThread();
+        }
+
+        private void StartCommandServerThread()
+        {
+            var serverThread = new Thread(PipeServerEntryPoint);
             serverThread.IsBackground = true;
             serverThread.Start();
         }
 
-        private void PositionOnTopLeftCorner()
+        private void PositionOnTopRightCorner()
         {
             Top = 0;
             double screenWidth = SystemParameters.PrimaryScreenWidth;
             Left = screenWidth - Width;
         }
 
-        private void StartPipeServer()
+        private void PipeServerEntryPoint()
         {
-            server = new PipeServer(viewModel);
+            server = new PipeServer(model);
             bool isAlive = true;
             do
             {
@@ -109,8 +114,8 @@ namespace XoClock
 
         private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            viewModel.SwitchMode();
-            if (viewModel.Mode == ClockMode.Clock)
+            model.SwitchMode();
+            if (model.Mode == ClockMode.Clock)
             {
                 LblDate.Visibility = Visibility.Visible;
             }
@@ -132,9 +137,9 @@ namespace XoClock
             switch (key)
             {
                 case Key.Space:
-                    if (viewModel.Mode == ClockMode.Chrono)
+                    if (model.Mode == ClockMode.Chrono)
                     {
-                        viewModel.SwitchChronometerStatus();
+                        model.SwitchChronometerStatus();
                     }
                     break;
                 case Key.LeftCtrl:
@@ -149,7 +154,7 @@ namespace XoClock
                     //if (Keyboard.Modifiers == ModifierKeys.Control) < could also use this
                     if (_isCtrlDown)
                     {
-                        if (viewModel.Mode == ClockMode.Chrono)
+                        if (model.Mode == ClockMode.Chrono)
                         {
                             Clipboard.SetText(LblTime.Content.ToString());
                         }

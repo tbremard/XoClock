@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace XoClock
 {
-    public class TimerCore : IClock
+    public class TimerCore : ITimerCore
     {
         public event TickEventHandler Tick;
         private readonly Timer _timer;

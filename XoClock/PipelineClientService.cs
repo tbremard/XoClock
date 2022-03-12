@@ -20,8 +20,10 @@ namespace XoClock
 
         public bool ConnectToServer()
         {
-            _pipeClient = new NamedPipeClientStream(PipeConst.LOCAL_SERVER_NAME, PipeConst.XOCLOCK_PIPE_NAME,
-                                                    PipeDirection.InOut, PipeOptions.None,
+            _pipeClient = new NamedPipeClientStream(PipeConst.LOCAL_SERVER_NAME, 
+                                                    PipeConst.XOCLOCK_PIPE_NAME,
+                                                    PipeDirection.InOut, 
+                                                    PipeOptions.None,
                                                     TokenImpersonationLevel.Impersonation);
             int timeout = 1000;
             try

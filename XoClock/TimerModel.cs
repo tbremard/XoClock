@@ -9,7 +9,7 @@ namespace XoClock
         private static ILogger _log = LogManager.GetCurrentClassLogger();
         public event PropertyChangedEventHandler PropertyChanged;
         public ClockMode Mode { get; private set; }
-        IClock _timerModel;
+        ITimerCore _timerModel;
         string _displayTime;
         string _displayDate;
         ChronometerStatus _chronometerStatus;
@@ -48,7 +48,7 @@ namespace XoClock
             }
         }
 
-        public TimerModel(IClock clock)
+        public TimerModel(ITimerCore clock)
         {
             _timerModel = clock;
             _timerModel.Tick += TimerModel_Tick;

@@ -2,7 +2,7 @@
 {
     public delegate void TickEventHandler(object sender, TickEventArgs e);
 
-    internal interface IClock
+    internal interface ITimerCore
     {
         event TickEventHandler Tick;
         int Period { get; set; }
