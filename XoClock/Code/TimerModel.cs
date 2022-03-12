@@ -12,7 +12,7 @@ namespace XoClock
         ITimerCore _timerModel;
         string _displayTime;
         string _displayDate;
-        ChronometerStatus _chronometerStatus;
+        ChronoStatus _chronometerStatus;
         DateTime _startedTimestamp;
         DateTime _stoppedTimestamp;
 
@@ -68,13 +68,13 @@ namespace XoClock
                 TimeSpan chronometerValue=TimeSpan.Zero;
                 switch(_chronometerStatus)
                 {
-                    case ChronometerStatus.NotStarted:
+                    case ChronoStatus.NotStarted:
                         chronometerValue = TimeSpan.Zero;
                         break;
-                    case ChronometerStatus.Running:
+                    case ChronoStatus.Running:
                         chronometerValue = DateTime.Now - _startedTimestamp;
                         break;
-                    case ChronometerStatus.Stopped:
+                    case ChronoStatus.Stopped:
                         chronometerValue = _stoppedTimestamp - _startedTimestamp;
                         break;
                 }
@@ -118,7 +118,7 @@ namespace XoClock
                     break;
                 case ClockMode.Chrono:
                     _timerModel.Period = 10;
-                    _chronometerStatus = ChronometerStatus.NotStarted;
+                    _chronometerStatus = ChronoStatus.NotStarted;
                     break;
                 default:
                     break;
@@ -129,13 +129,13 @@ namespace XoClock
         {
             switch(_chronometerStatus)
             {
-                case ChronometerStatus.NotStarted:
+                case ChronoStatus.NotStarted:
                     StartChrono();
                     break;
-                case ChronometerStatus.Running:
+                case ChronoStatus.Running:
                     StopChrono();
                     break;
-                case ChronometerStatus.Stopped:
+                case ChronoStatus.Stopped:
                     ResetChrono();
                     break;
             }
@@ -144,20 +144,20 @@ namespace XoClock
         public void ResetChrono()
         {
             _log.Debug("Reset chronometer...");
-            _chronometerStatus = ChronometerStatus.NotStarted;
+            _chronometerStatus = ChronoStatus.NotStarted;
         }
 
         public void StopChrono()
         {
             _log.Debug("Stoping chronometer...");
-            _chronometerStatus = ChronometerStatus.Stopped;
+            _chronometerStatus = ChronoStatus.Stopped;
             _stoppedTimestamp = DateTime.Now;
         }
 
         public void StartChrono()
         {
             _log.Debug("Starting chronometer...");
-            _chronometerStatus = ChronometerStatus.Running;
+            _chronometerStatus = ChronoStatus.Running;
             _startedTimestamp = DateTime.Now;
         }
     }

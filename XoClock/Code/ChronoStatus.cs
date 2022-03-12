@@ -1,6 +1,6 @@
 ﻿namespace XoClock
 {
-    public enum ChronometerStatus
+    public enum ChronoStatus
     {
         NotStarted,
         Running,
