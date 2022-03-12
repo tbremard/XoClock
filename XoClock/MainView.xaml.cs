@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
 using System.Windows;
 using System.Windows.Input;
-using Point = System.Windows.Point;
+//using Point = System.Windows.Point;
 using System.Windows.Media;
 using System.Threading;
 using NLog;
@@ -26,7 +26,6 @@ namespace XoClock
         public MainView()
         {
             InitializeComponent();
-            LoadColor();
         }
 
         private void LoadColor()
@@ -41,6 +40,7 @@ namespace XoClock
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            LoadColor();
             PositionOnTopLeftCorner();
             var clock = new TimerCore();
             viewModel = new TimerModel(clock);
@@ -94,7 +94,6 @@ namespace XoClock
             {
                 try
                 {
-                    // Point currentPosition = e.GetPosition(this);
                     Point currentPosition = XoMouse.GetCursorPos();
                     _log.Debug("Moving to position: " + currentPosition);
                     Left += currentPosition.X - _lastPosition.X;
