@@ -1,7 +1,6 @@
 ﻿using System.Configuration;
 using System.Windows;
 using System.Windows.Input;
-//using Point = System.Windows.Point;
 using System.Windows.Media;
 using System.Threading;
 using NLog;
@@ -22,6 +21,9 @@ namespace XoClock
         bool _isCtrlDown = false;
         bool _copyMode = false;
         Key _lastKey = Key.None;
+        bool _highlightBorder = false;
+        Brush _defaultBorder;
+        DispatcherTimer _blinkBorderTimer;
 
         public MainView()
         {
@@ -46,6 +48,37 @@ namespace XoClock
             model = new TimerModel(core);
             DataContext = model;
             StartCommandServerThread();
+            StartBlinker();
+        }
+
+        private void StartBlinker()
+        {
+            _defaultBorder = BorderBrush;
+            _blinkBorderTimer = new DispatcherTimer();
+            _blinkBorderTimer.Tick += BlinkBorderTimer_Tick;
+            _blinkBorderTimer.Interval = TimeSpan.FromMilliseconds(300);
+            _blinkBorderTimer.Start();
+        }
+
+        private void FlashBorder()
+        {
+            _log.Debug("FlashBorder()");
+            _highlightBorder = true;
+        }
+
+        private void BlinkBorderTimer_Tick(object sender, EventArgs e)
+        {
+            if (_highlightBorder)
+            {
+                var highlight = new SolidColorBrush();
+                highlight.Color = Colors.Aqua;
+                BorderBrush = highlight;
+                _highlightBorder = false; // Auto Reset
+            }
+            else
+            {
+                BorderBrush = _defaultBorder;
+            }
         }
 
         private void StartCommandServerThread()
@@ -82,8 +115,6 @@ namespace XoClock
         {
             _isMoving = true;
             _lastPosition = XoMouse.GetCursorPos();
-//            Left = _lastPosition.X - Width / 2;
-//            Top = _lastPosition.Y - Height / 2;
             _log.Debug("_isMoving: "+ _isMoving + " from: "+_lastPosition);
         }
 
@@ -157,6 +188,7 @@ namespace XoClock
                         if (model.Mode == ClockMode.Chrono)
                         {
                             Clipboard.SetText(LblTime.Content.ToString());
+                            FlashBorder();
                         }
                         else
                         {
@@ -190,6 +222,7 @@ namespace XoClock
                         string buffer = LblTime.Content.ToString();
                         _log.Debug("Copy to clipboard: " + buffer);
                         Clipboard.SetText(buffer);
+                        FlashBorder();
                     }
                     else
                     {
@@ -280,35 +313,6 @@ namespace XoClock
                     Left++;
                     break;
             }
-        }
-
-        private void FlashBorder()
-        {
-            _log.Debug("FlashBorder()");
-            Brush currentBrush = BorderBrush;
-            var highlight = new SolidColorBrush();
-            highlight.Color = Colors.Aqua;
-
-            BorderBrush = highlight;
-
-            Dispatcher.InvokeAsync(() =>
-            {
-                Thread.Sleep(100);
-                BorderBrush = currentBrush; //  FLASH DO NOT WWWWWWWWWWWWWWWWWWWWWWORK
-            });
-            /*
-            Dispatcher.InvokeAsync(() => );
-            Dispatcher.InvokeAsync(() => 
-            );
-/*
-            Dispatcher.Invoke(()=> 
-            { 
-                BorderBrush = highlight; 
-                Thread.Sleep(300);
-                BorderBrush = currentBrush;
-
-            }, DispatcherPriority.Render);
-*/
         }
 
         private void MoveToLeft()
