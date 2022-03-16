@@ -156,6 +156,8 @@ namespace XoClock
             }
         }
 
+        bool _isBold = false;
+
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             Key key = e.Key;
@@ -195,6 +197,22 @@ namespace XoClock
                             _copyMode = true;
                         }
                     }
+                    break;
+                case Key.B:
+                    int boldWeight = 800;
+                    int normalWeight = 400;
+                    FontWeight weight;
+                    _log.Debug("_isBold: "+ _isBold);
+                    if (_isBold)
+                    {
+                        weight = FontWeight.FromOpenTypeWeight(normalWeight);
+                    }
+                    else
+                    {
+                        weight = FontWeight.FromOpenTypeWeight(boldWeight);
+                    }
+                    _isBold = !_isBold;
+                    LblTime.FontWeight = weight;//do not change the date, only the time
                     break;
                 case Key.D:
                     if (_copyMode)

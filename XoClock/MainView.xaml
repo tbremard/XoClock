@@ -31,6 +31,7 @@
                    ClipToBounds="True"  Padding="2, 0, 2, 0" Margin="0" 
                    Foreground="DarkBlue"
                    FontFamily="./Fonts/#Software Tester 7"
+                   FontWeight="Normal"
                    Content="{Binding Path=DisplayTime, FallbackValue='08:54:01'}"/>
             <Label Name="LblDate"
                    TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
