@@ -6,6 +6,8 @@ using System.Threading;
 using NLog;
 using System;
 using System.Windows.Threading;
+using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace XoClock
 {
@@ -33,11 +35,56 @@ namespace XoClock
         private void LoadColor()
         {
             string htmlColor = ConfigurationManager.AppSettings.Get("FontColor");
-            _log.Debug("Loaded color from config file: FontColor="+htmlColor);
-            var myColor = (Color)ColorConverter.ConvertFromString(htmlColor);
-            var brush = new SolidColorBrush(myColor);
-            LblTime.Foreground = brush;
-            LblDate.Foreground = brush;
+            if (!string.IsNullOrEmpty(htmlColor))
+            {
+                _log.Debug("Loaded color from config file: FontColor=" + htmlColor);
+                SolidColorBrush brush = CreateBrush(htmlColor);
+                LblTime.Foreground = brush;
+                LblDate.Foreground = brush;
+            }
+            else
+            {
+                _log.Debug("FontColor is not set => using default");
+            }
+            string bgImagePath = ConfigurationManager.AppSettings.Get("BgImage");
+            if (!string.IsNullOrEmpty(htmlColor))
+            {
+                _log.Debug("Loaded bg image from config file: BgImage=" + bgImagePath);
+                if (File.Exists(bgImagePath))
+                {
+                    string currentDirectory = Directory.GetCurrentDirectory();
+                    Uri uriSource;
+                    if (bgImagePath.Contains(":"))
+                    {
+                        uriSource = new Uri("file://" + bgImagePath);
+                    }
+                    else
+                    {
+                        uriSource = new Uri("file://" + Path.Combine(currentDirectory, bgImagePath));
+                    }
+                    _log.Debug("uriSource: "+ uriSource);
+                    var bitmapImage = new BitmapImage(uriSource);
+                    Background = new ImageBrush(bitmapImage);
+                }
+                else
+                {
+                    _log.Error("file not found: " + bgImagePath);
+                }
+            }
+            htmlColor = ConfigurationManager.AppSettings.Get("BgColor");
+            if (!string.IsNullOrEmpty(htmlColor))
+            {
+                _log.Debug("Loaded color from config file: BgColor=" + htmlColor);
+                SolidColorBrush backgroundBrush = CreateBrush(htmlColor);
+                Background = backgroundBrush;
+            }
+        }
+
+        private SolidColorBrush CreateBrush(string htmlColor)
+        {
+            var color = (Color)ColorConverter.ConvertFromString(htmlColor);
+            var brush = new SolidColorBrush(color);
+            return brush;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -199,10 +246,9 @@ namespace XoClock
                     }
                     break;
                 case Key.B:
-                    int boldWeight = 800;
-                    int normalWeight = 400;
+                    const int boldWeight = 800;
+                    const int normalWeight = 400;
                     FontWeight weight;
-                    _log.Debug("_isBold: "+ _isBold);
                     if (_isBold)
                     {
                         weight = FontWeight.FromOpenTypeWeight(normalWeight);
@@ -212,6 +258,7 @@ namespace XoClock
                         weight = FontWeight.FromOpenTypeWeight(boldWeight);
                     }
                     _isBold = !_isBold;
+                    _log.Debug("_isBold: " + _isBold);
                     LblTime.FontWeight = weight;//do not change the date, only the time
                     break;
                 case Key.D:

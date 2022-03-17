@@ -29,14 +29,14 @@
             <Label Name="LblTime"
                    TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
                    ClipToBounds="True"  Padding="2, 0, 2, 0" Margin="0" 
-                   Foreground="DarkBlue"
+                   Foreground="AliceBlue"
                    FontFamily="./Fonts/#Software Tester 7"
                    FontWeight="Normal"
                    Content="{Binding Path=DisplayTime, FallbackValue='08:54:01'}"/>
             <Label Name="LblDate"
                    TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
                    ClipToBounds="True"  Padding="2, 0, 2, 0" Margin="0" 
-                   Foreground="DarkBlue"
+                   Foreground="AliceBlue"
                    FontFamily="./Fonts/#Software Tester 7"
                    FontSize="6"
                    Content="{Binding Path=DisplayDate, FallbackValue='2022-01-01'}"/>
@@ -44,7 +44,7 @@
 
     </Viewbox>
     <Window.Background>
-        <ImageBrush ImageSource="Resources/black-gradient.jpg" TileMode="Tile" />
+        <ImageBrush ImageSource="BgImage/black-gradient.jpg" TileMode="Tile" />
     </Window.Background>
 </Window>
     
