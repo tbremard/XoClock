@@ -45,8 +45,11 @@ namespace XoClock
             StartBlinker();
         }
 
+        double _cornerRadius;
+
         private void LoadColor()
         {
+            _cornerRadius = MyBorder.CornerRadius.BottomLeft;
             string htmlColor = ConfigurationManager.AppSettings.Get("FontColor");
             if (!string.IsNullOrEmpty(htmlColor))
             {
@@ -158,6 +161,7 @@ namespace XoClock
         {
             MoveToTop();
             MoveToRight();
+            MoveToRight();
         }
 
         private void PipeServerEntryPoint()
@@ -226,11 +230,14 @@ namespace XoClock
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             Key key = e.Key;
-            if (key == _lastKey)
+            if (!IsArrow(key))
             {
-                return;
+                if (key == _lastKey)
+                {
+                    return;
+                }
+                _lastKey = key;
             }
-            _lastKey = key;
             _log.Debug("KeyDown: " + key);
             switch (key)
             {
@@ -325,6 +332,7 @@ namespace XoClock
                 case Key.Escape:
                     this.WindowState = WindowState.Normal;
                     this.ShowInTaskbar = false;
+                    ResetBorder();
                     Topmost = _lastTopMost;
                     break;
                 case Key.F3:
@@ -402,17 +410,82 @@ namespace XoClock
             }
         }
 
+        private bool IsArrow(Key key)
+        {
+            if (key == Key.Left)
+            {
+                return true;
+            }
+            if (key == Key.Right)
+            {
+                return true;
+            }
+            if (key == Key.Up)
+            {
+                return true;
+            }
+            if (key == Key.Down)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private void ResetBorder()
+        {
+            MyBorder.CornerRadius = new CornerRadius(_cornerRadius);
+            MyBorder.BorderThickness = new Thickness(3);
+        }
+
+        public double HorizontalCenter
+        {
+            get { return SystemParameters.PrimaryScreenWidth / 2 - Width / 2; }
+        }
+               
         private void MoveToLeft()
         {
-            Left = 0;
+            if (Left <= HorizontalCenter)
+            {
+                Left = 0;
+                var currentRadius = MyBorder.CornerRadius;
+                currentRadius.BottomRight = _cornerRadius;
+                currentRadius.BottomLeft = 0;
+                currentRadius.TopLeft = 0;
+                MyBorder.CornerRadius = currentRadius;
+            }
+            else
+            {
+                Left = HorizontalCenter;
+                var currentRadius = MyBorder.CornerRadius;
+                currentRadius.BottomLeft = _cornerRadius;
+                currentRadius.BottomRight = _cornerRadius;
+                MyBorder.CornerRadius = currentRadius;
+            }
         }
 
         private void MoveToRight()
         {
-            double screenWidth = SystemParameters.PrimaryScreenWidth;
-            var effect = MyBorder.Effect as DropShadowEffect;
-            double offset = effect.BlurRadius;// + MyBorder.CornerRadius.TopRight;
-            Left = screenWidth - Width + offset;
+            if (Left < HorizontalCenter)
+            {
+                Left = HorizontalCenter;
+                var currentRadius = MyBorder.CornerRadius;
+                currentRadius.BottomLeft = _cornerRadius;
+                currentRadius.BottomRight = _cornerRadius;
+                MyBorder.CornerRadius = currentRadius;
+            }
+            else
+            {
+                double screenWidth = SystemParameters.PrimaryScreenWidth;
+                var effect = MyBorder.Effect as DropShadowEffect;
+                double offset = effect.BlurRadius;// + MyBorder.CornerRadius.TopRight;
+                Left = screenWidth - Width + offset;
+                var currentRadius = MyBorder.CornerRadius;
+                currentRadius.TopRight = 0;
+                currentRadius.BottomRight = 0;
+                currentRadius.BottomLeft = _cornerRadius;
+                MyBorder.CornerRadius = currentRadius;
+
+            }
         }
 
         private void MoveToBottom()
@@ -424,6 +497,10 @@ namespace XoClock
         private void MoveToTop()
         {
             Top = 0;
+            var currentRadius = MyBorder.CornerRadius;
+            currentRadius.TopLeft = 0;
+            currentRadius.TopRight = 0;
+            MyBorder.CornerRadius = currentRadius;
         }
 
         int verticalCounter = 0;
