@@ -32,20 +32,20 @@
             </Border.Background>
             <Viewbox Stretch="Uniform" Margin="0" Name="viewbox">
             <StackPanel>
-                <Label Name="LblTime"
+                <TextBlock Name="LblTime"
                        TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
                        ClipToBounds="True"  Padding="2, 0, 2, 0" Margin="0" 
                        Foreground="AliceBlue"
                        FontFamily="./Fonts/#Software Tester 7"
                        FontWeight="Normal"
-                       Content="{Binding Path=DisplayTime, FallbackValue='08:54:01'}"/>
-                <Label Name="LblDate"
+                       Text="{Binding Path=DisplayTime, FallbackValue='08:54:01'}"/>
+                <TextBlock Name="LblDate"
                        TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
                        ClipToBounds="True"  Padding="2, 0, 2, 0" Margin="0" 
                        Foreground="AliceBlue"
                        FontFamily="./Fonts/#Software Tester 7"
                        FontSize="6"
-                       Content="{Binding Path=DisplayDate, FallbackValue='2022-01-01'}"/>
+                       Text="{Binding Path=DisplayDate, FallbackValue='2022-01-01'}"/>
             </StackPanel>
         </Viewbox>
     </Border>

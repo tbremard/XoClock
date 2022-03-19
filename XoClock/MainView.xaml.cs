@@ -237,7 +237,7 @@ namespace XoClock
                     {
                         if (model.Mode == ClockMode.Chrono)
                         {
-                            Clipboard.SetText(LblTime.Content.ToString());
+                            Clipboard.SetText(LblTime.Text.ToString());
                             FlashBorder();
                         }
                         else
@@ -265,7 +265,7 @@ namespace XoClock
                 case Key.D:
                     if (_copyMode)
                     {
-                        string date = LblDate.Content.ToString();
+                        string date = LblDate.Text.ToString();
                         _log.Debug("Copy to clipboard: "+date);
                         Clipboard.SetText(date);
                         FlashBorder();
@@ -285,7 +285,7 @@ namespace XoClock
                     }
                     else if (_copyMode)
                     {
-                        string buffer = LblTime.Content.ToString();
+                        string buffer = LblTime.Text.ToString();
                         _log.Debug("Copy to clipboard: " + buffer);
                         Clipboard.SetText(buffer);
                         FlashBorder();
