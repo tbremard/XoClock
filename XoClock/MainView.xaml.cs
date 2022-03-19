@@ -13,6 +13,7 @@ namespace XoClock
 {
     public partial class MainView : Window
     {
+        private const string URI_FILE_PREFIX = "file://";
         private static ILogger _log = LogManager.GetCurrentClassLogger();
         bool _isMoving = false;
         Point _lastPosition;
@@ -56,11 +57,11 @@ namespace XoClock
                     Uri uriSource;
                     if (bgImagePath.Contains(":"))
                     {
-                        uriSource = new Uri("file://" + bgImagePath);
+                        uriSource = new Uri(URI_FILE_PREFIX + bgImagePath);
                     }
                     else
                     {
-                        uriSource = new Uri("file://" + Path.Combine(currentDirectory, bgImagePath));
+                        uriSource = new Uri(URI_FILE_PREFIX + Path.Combine(currentDirectory, bgImagePath));
                     }
                     _log.Debug("uriSource: "+ uriSource);
                     var bitmapImage = new BitmapImage(uriSource);
@@ -117,9 +118,9 @@ namespace XoClock
         {
             if (_highlightBorder)
             {
-                var highlight = new SolidColorBrush();
-                highlight.Color = Colors.Aqua;
-                BorderBrush = highlight;
+                //var highlight = new SolidColorBrush();
+                //highlight.Color = Colors.Aqua;
+                BorderBrush = LblTime.Foreground;
                 _highlightBorder = false; // Auto Reset
             }
             else
