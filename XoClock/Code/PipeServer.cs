@@ -25,7 +25,7 @@ namespace XoClock
             try
             {
                 _pipeServer = new NamedPipeServerStream(PipeConst.XOCLOCK_PIPE_NAME, PipeDirection.InOut);
-                _log.Debug($"Pipe [{PipeConst.XOCLOCK_PIPE_NAME}] is open");
+                _log.Debug($"Pipe [{PipeConst.XOCLOCK_PIPE_NAME}] is open: you can control via cmd line (refer to UserGuide.txt)");
             }
             catch (Exception ex)
             {

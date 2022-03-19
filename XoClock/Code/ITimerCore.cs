@@ -5,6 +5,6 @@
     internal interface ITimerCore
     {
         event TickEventHandler Tick;
-        int Period { get; set; }
+        int PeriodInMs { get; set; }
     }
 }

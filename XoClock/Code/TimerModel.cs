@@ -9,7 +9,7 @@ namespace XoClock
         private static ILogger _log = LogManager.GetCurrentClassLogger();
         public event PropertyChangedEventHandler PropertyChanged;
         public ClockMode Mode { get; private set; }
-        ITimerCore _timerModel;
+        ITimerCore _timerCore;
         string _displayTime;
         string _displayDate;
         ChronoStatus _chronometerStatus;
@@ -50,8 +50,8 @@ namespace XoClock
 
         public TimerModel(ITimerCore clock)
         {
-            _timerModel = clock;
-            _timerModel.Tick += TimerModel_Tick;
+            _timerCore = clock;
+            _timerCore.Tick += TimerModel_Tick;
             Mode = ClockMode.Clock;
         }
 
@@ -114,10 +114,10 @@ namespace XoClock
             switch (mode)
             {
                 case ClockMode.Clock:
-                    _timerModel.Period = 1000;
+                    _timerCore.PeriodInMs = 1000;
                     break;
                 case ClockMode.Chrono:
-                    _timerModel.Period = 10;
+                    _timerCore.PeriodInMs = 10;
                     _chronometerStatus = ChronoStatus.NotStarted;
                     break;
                 default:

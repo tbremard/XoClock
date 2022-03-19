@@ -8,6 +8,7 @@ using System;
 using System.Windows.Threading;
 using System.IO;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Effects;
 
 namespace XoClock
 {
@@ -24,13 +25,24 @@ namespace XoClock
         bool _isCtrlDown = false;
         bool _copyMode = false;
         Key _lastKey = Key.None;
-        bool _highlightBorder = false;
+        bool _highlightBorder = false; // flag used by Blink timer to flash border to ack clipboard copy
         Brush _defaultBorder;
         DispatcherTimer _blinkBorderTimer;
 
         public MainView()
         {
             InitializeComponent();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadColor();
+            PositionOnTopRightCorner();
+            var core = new TimerCore();
+            model = new TimerModel(core);
+            DataContext = model;
+            StartCommandServerThread();
+            StartBlinker();
         }
 
         private void LoadColor()
@@ -65,7 +77,7 @@ namespace XoClock
                     }
                     _log.Debug("uriSource: "+ uriSource);
                     var bitmapImage = new BitmapImage(uriSource);
-                    Background = new ImageBrush(bitmapImage);
+                    MyBorder.Background = new ImageBrush(bitmapImage);
                 }
                 else
                 {
@@ -77,7 +89,7 @@ namespace XoClock
             {
                 _log.Debug("Loaded color from config file: BgColor=" + htmlColor);
                 SolidColorBrush backgroundBrush = CreateBrush(htmlColor);
-                Background = backgroundBrush;
+                MyBorder.Background = backgroundBrush;
             }
         }
 
@@ -88,20 +100,9 @@ namespace XoClock
             return brush;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            LoadColor();
-            PositionOnTopRightCorner();
-            var core = new TimerCore();
-            model = new TimerModel(core);
-            DataContext = model;
-            StartCommandServerThread();
-            StartBlinker();
-        }
-
         private void StartBlinker()
         {
-            _defaultBorder = BorderBrush;
+            _defaultBorder = MyBorder.BorderBrush;
             _blinkBorderTimer = new DispatcherTimer();
             _blinkBorderTimer.Tick += BlinkBorderTimer_Tick;
             _blinkBorderTimer.Interval = TimeSpan.FromMilliseconds(300);
@@ -120,12 +121,12 @@ namespace XoClock
             {
                 //var highlight = new SolidColorBrush();
                 //highlight.Color = Colors.Aqua;
-                BorderBrush = LblTime.Foreground;
+                MyBorder.BorderBrush = LblTime.Foreground;
                 _highlightBorder = false; // Auto Reset
             }
             else
             {
-                BorderBrush = _defaultBorder;
+                MyBorder.BorderBrush = _defaultBorder;
             }
         }
 
@@ -138,9 +139,8 @@ namespace XoClock
 
         private void PositionOnTopRightCorner()
         {
-            Top = 0;
-            double screenWidth = SystemParameters.PrimaryScreenWidth;
-            Left = screenWidth - Width;
+            MoveToTop();
+            MoveToRight();
         }
 
         private void PipeServerEntryPoint()
@@ -298,6 +298,10 @@ namespace XoClock
                 case Key.F1:
                     this.WindowState = WindowState.Maximized;
                     this.ShowInTaskbar = false;
+                    MyBorder.CornerRadius = new CornerRadius(0);
+                    MyBorder.Padding = new Thickness(0);
+                    MyBorder.Margin = new Thickness(0);
+                    MyBorder.BorderThickness = new Thickness(0);
                     Topmost = _lastTopMost;
                     break;
                 case Key.F2:
@@ -389,7 +393,9 @@ namespace XoClock
         private void MoveToRight()
         {
             double screenWidth = SystemParameters.PrimaryScreenWidth;
-            Left = screenWidth - Width;
+            var effect = MyBorder.Effect as DropShadowEffect;
+            double offset = effect.BlurRadius + MyBorder.CornerRadius.TopRight;
+            Left = screenWidth - Width + offset;
         }
 
         private void MoveToBottom()

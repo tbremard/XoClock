@@ -6,13 +6,13 @@
         xmlns:local="clr-namespace:XoClock"
         mc:Ignorable="d"
         Title="MainWindow" Height="99" Width="300"
-        BorderThickness="5"
-        BorderBrush="Black"
         WindowStyle="None" 
         AllowsTransparency="True" 
         ResizeMode="NoResize" 
         Topmost="True"
-        Margin="0" Padding="0"
+        Background="Transparent"
+        Margin="0" 
+        Padding="0"
         ShowInTaskbar="False"
         Loaded="Window_Loaded"
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
@@ -22,29 +22,32 @@
         MouseMove="Window_MouseMove"
         MouseDoubleClick="Window_MouseDoubleClick"
         KeyDown="Window_KeyDown"
-        KeyUp="Window_KeyUp"    
-        >
-    <Viewbox Stretch="Uniform" Margin="0" Name="viewbox">
-        <StackPanel>
-            <Label Name="LblTime"
-                   TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
-                   ClipToBounds="True"  Padding="2, 0, 2, 0" Margin="0" 
-                   Foreground="AliceBlue"
-                   FontFamily="./Fonts/#Software Tester 7"
-                   FontWeight="Normal"
-                   Content="{Binding Path=DisplayTime, FallbackValue='08:54:01'}"/>
-            <Label Name="LblDate"
-                   TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
-                   ClipToBounds="True"  Padding="2, 0, 2, 0" Margin="0" 
-                   Foreground="AliceBlue"
-                   FontFamily="./Fonts/#Software Tester 7"
-                   FontSize="6"
-                   Content="{Binding Path=DisplayDate, FallbackValue='2022-01-01'}"/>
-        </StackPanel>
-
-    </Viewbox>
-    <Window.Background>
-        <ImageBrush ImageSource="BgImage/black-gradient.jpg" TileMode="Tile" />
-    </Window.Background>
+        KeyUp="Window_KeyUp">
+       <Border Name="MyBorder" BorderBrush="Black" BorderThickness="5" CornerRadius="10" Margin="0 0 5 5">
+            <Border.Effect>
+                <DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="4"></DropShadowEffect>
+            </Border.Effect>
+            <Border.Background>
+                <ImageBrush ImageSource="BgImage/black-gradient.jpg" TileMode="Tile" />
+            </Border.Background>
+            <Viewbox Stretch="Uniform" Margin="0" Name="viewbox">
+            <StackPanel>
+                <Label Name="LblTime"
+                       TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
+                       ClipToBounds="True"  Padding="2, 0, 2, 0" Margin="0" 
+                       Foreground="AliceBlue"
+                       FontFamily="./Fonts/#Software Tester 7"
+                       FontWeight="Normal"
+                       Content="{Binding Path=DisplayTime, FallbackValue='08:54:01'}"/>
+                <Label Name="LblDate"
+                       TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
+                       ClipToBounds="True"  Padding="2, 0, 2, 0" Margin="0" 
+                       Foreground="AliceBlue"
+                       FontFamily="./Fonts/#Software Tester 7"
+                       FontSize="6"
+                       Content="{Binding Path=DisplayDate, FallbackValue='2022-01-01'}"/>
+            </StackPanel>
+        </Viewbox>
+    </Border>
 </Window>
     

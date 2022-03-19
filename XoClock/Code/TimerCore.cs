@@ -7,17 +7,17 @@ namespace XoClock
     {
         public event TickEventHandler Tick;
         private readonly Timer _timer;
-        private int _period;
+        private int _periodInMs;
 
-        public int Period
+        public int PeriodInMs
         {
             get
             {
-                return _period;
+                return _periodInMs;
             }
             set
             {
-                _period = value;
+                _periodInMs = value;
                 _timer.Change(0, value);
             }
         }
@@ -25,7 +25,7 @@ namespace XoClock
         public TimerCore()
         {
             _timer = new Timer(MyTimerCallback);
-            Period = 1000;
+            PeriodInMs = 1000;
         }
 
         void MyTimerCallback(object state)
