@@ -54,6 +54,8 @@ namespace XoClock
                 SolidColorBrush brush = CreateBrush(htmlColor);
                 LblTime.Foreground = brush;
                 LblDate.Foreground = brush;
+                var shadow = LblTime.Effect as DropShadowEffect;
+               // shadow.Color = CreateColor(htmlColor);
             }
             else
             {
@@ -95,9 +97,15 @@ namespace XoClock
 
         private SolidColorBrush CreateBrush(string htmlColor)
         {
-            var color = (Color)ColorConverter.ConvertFromString(htmlColor);
+            Color color = CreateColor(htmlColor);
             var brush = new SolidColorBrush(color);
             return brush;
+        }
+
+        private static Color CreateColor(string htmlColor)
+        {
+            var ret = (Color)ColorConverter.ConvertFromString(htmlColor);
+            return ret;
         }
 
         private void StartBlinker()

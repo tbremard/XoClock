@@ -23,7 +23,7 @@
         MouseDoubleClick="Window_MouseDoubleClick"
         KeyDown="Window_KeyDown"
         KeyUp="Window_KeyUp">
-       <Border Name="MyBorder" BorderBrush="Black" BorderThickness="5" CornerRadius="10" Margin="0 0 5 5">
+       <Border Name="MyBorder" BorderBrush="DimGray" BorderThickness="5" CornerRadius="10" Margin="0 0 5 5">
             <Border.Effect>
                 <DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="4"></DropShadowEffect>
             </Border.Effect>
@@ -38,14 +38,22 @@
                        Foreground="AliceBlue"
                        FontFamily="./Fonts/#Software Tester 7"
                        FontWeight="Normal"
-                       Text="{Binding Path=DisplayTime, FallbackValue='08:54:01'}"/>
+                       Text="{Binding Path=DisplayTime, FallbackValue='08:54:01'}">
+                    <TextBlock.Effect>
+                        <DropShadowEffect ShadowDepth="0.1" Direction="315" Color="Red" Opacity="1" BlurRadius="1" />
+                    </TextBlock.Effect>
+                </TextBlock>
                 <TextBlock Name="LblDate"
                        TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
                        ClipToBounds="True"  Padding="2, 0, 2, 0" Margin="0" 
                        Foreground="AliceBlue"
                        FontFamily="./Fonts/#Software Tester 7"
                        FontSize="6"
-                       Text="{Binding Path=DisplayDate, FallbackValue='2022-01-01'}"/>
+                       Text="{Binding Path=DisplayDate, FallbackValue='2022-01-01'}">
+                    <TextBlock.Effect>
+                        <DropShadowEffect ShadowDepth="0.1" Direction="315" Color="Red" Opacity="1" BlurRadius="1" />
+                    </TextBlock.Effect>
+                </TextBlock>
             </StackPanel>
         </Viewbox>
     </Border>
