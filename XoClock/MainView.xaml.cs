@@ -52,14 +52,23 @@ namespace XoClock
             {
                 _log.Debug("Loaded color from config file: FontColor=" + htmlColor);
                 SolidColorBrush brush = CreateBrush(htmlColor);
-                LblTime.Foreground = brush;
-                LblDate.Foreground = brush;
-                var shadow = LblTime.Effect as DropShadowEffect;
+                TxtTime.Foreground = brush;
+                TxtDate.Foreground = brush;
+                var shadow = TxtTime.Effect as DropShadowEffect;
                // shadow.Color = CreateColor(htmlColor);
             }
             else
             {
                 _log.Debug("FontColor is not set => using default");
+            }
+            htmlColor = ConfigurationManager.AppSettings.Get("TextDropShadowColor");
+            if (!string.IsNullOrEmpty(htmlColor))
+            {
+                _log.Debug("Loaded color from config file: TextDropShadowColor=" + htmlColor);
+                var shadow = TxtTime.Effect as DropShadowEffect;
+                shadow.Color = CreateColor(htmlColor);
+                shadow = TxtDate.Effect as DropShadowEffect;
+                shadow.Color = CreateColor(htmlColor);
             }
             string bgImagePath = ConfigurationManager.AppSettings.Get("BgImage");
             if (!string.IsNullOrEmpty(htmlColor))
@@ -129,7 +138,7 @@ namespace XoClock
             {
                 //var highlight = new SolidColorBrush();
                 //highlight.Color = Colors.Aqua;
-                MyBorder.BorderBrush = LblTime.Foreground;
+                MyBorder.BorderBrush = TxtTime.Foreground;
                 _highlightBorder = false; // Auto Reset
             }
             else
@@ -204,11 +213,11 @@ namespace XoClock
             model.SwitchMode();
             if (model.Mode == ClockMode.Clock)
             {
-                LblDate.Visibility = Visibility.Visible;
+                TxtDate.Visibility = Visibility.Visible;
             }
             else
             {
-                LblDate.Visibility = Visibility.Collapsed;
+                TxtDate.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -245,7 +254,7 @@ namespace XoClock
                     {
                         if (model.Mode == ClockMode.Chrono)
                         {
-                            Clipboard.SetText(LblTime.Text.ToString());
+                            Clipboard.SetText(TxtTime.Text.ToString());
                             FlashBorder();
                         }
                         else
@@ -268,12 +277,12 @@ namespace XoClock
                     }
                     _isBold = !_isBold;
                     _log.Debug("_isBold: " + _isBold);
-                    LblTime.FontWeight = weight;//do not change the date, only the time
+                    TxtTime.FontWeight = weight;//do not change the date, only the time
                     break;
                 case Key.D:
                     if (_copyMode)
                     {
-                        string date = LblDate.Text.ToString();
+                        string date = TxtDate.Text.ToString();
                         _log.Debug("Copy to clipboard: "+date);
                         Clipboard.SetText(date);
                         FlashBorder();
@@ -293,7 +302,7 @@ namespace XoClock
                     }
                     else if (_copyMode)
                     {
-                        string buffer = LblTime.Text.ToString();
+                        string buffer = TxtTime.Text.ToString();
                         _log.Debug("Copy to clipboard: " + buffer);
                         Clipboard.SetText(buffer);
                         FlashBorder();
@@ -402,7 +411,7 @@ namespace XoClock
         {
             double screenWidth = SystemParameters.PrimaryScreenWidth;
             var effect = MyBorder.Effect as DropShadowEffect;
-            double offset = effect.BlurRadius + MyBorder.CornerRadius.TopRight;
+            double offset = effect.BlurRadius;// + MyBorder.CornerRadius.TopRight;
             Left = screenWidth - Width + offset;
         }
 
@@ -422,15 +431,15 @@ namespace XoClock
 
         private void SwitchDisplayDate()
         {
-            if (LblDate.IsVisible)
+            if (TxtDate.IsVisible)
             {
-                LblDate.Visibility = Visibility.Collapsed;
+                TxtDate.Visibility = Visibility.Collapsed;
             }
             else
             {
-                LblDate.Visibility = Visibility.Visible;
+                TxtDate.Visibility = Visibility.Visible;
             }
-            _log.Debug("SwitchDisplayDate: "+ LblDate.Visibility);
+            _log.Debug("SwitchDisplayDate: "+ TxtDate.Visibility);
         }
 
         private void OpacityIncrease()
