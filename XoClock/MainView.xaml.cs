@@ -15,6 +15,11 @@ namespace XoClock
     public partial class MainView : Window
     {
         private const string URI_FILE_PREFIX = "file://";
+        private const int MOVE_FAST_TRIGGER = 5;
+        private const int MOVE_ULTRA_FAST_TRIGGER = 20;
+        private const int MOVE_ULTRA_FAST_SPEED = 50;
+        int verticalCounter = 0;
+        int horizontalCounter = 0;
         private static ILogger _log = LogManager.GetCurrentClassLogger();
         bool _isMoving = false;
         Point _lastPosition;
@@ -28,8 +33,6 @@ namespace XoClock
         bool _highlightBorder = false; // flag used by Blink timer to flash border to ack clipboard copy
         Brush _defaultBorder;
         DispatcherTimer _blinkBorderTimer;
-        int verticalCounter = 0;
-        int horizontalCounter = 0;
         double _cornerRadius;
         bool _isBold = false;
 
@@ -389,13 +392,21 @@ namespace XoClock
                         verticalCounter = 0;
                     }
                     verticalCounter--;
-                    if (verticalCounter<-5)
+                    if (verticalCounter < -1 * MOVE_ULTRA_FAST_TRIGGER)
+                    {
+                        Top -= MOVE_ULTRA_FAST_SPEED;
+                    }
+                    else if (verticalCounter<-1* MOVE_FAST_TRIGGER)
                     {
                         Top -= 10;
                     }
                     else
                     {
                         Top--;
+                    }
+                    if (Top<0)
+                    {
+                        Top = 0;
                     }
                     break;
                 case Key.Down:
@@ -409,7 +420,11 @@ namespace XoClock
                         verticalCounter = 0;
                     }
                     verticalCounter++;
-                    if (verticalCounter > 5)
+                    if (verticalCounter > MOVE_ULTRA_FAST_TRIGGER)
+                    {
+                        Top += 50;
+                    }
+                    else if (verticalCounter > MOVE_FAST_TRIGGER)
                     {
                         Top += 10;
                     }
