@@ -28,7 +28,6 @@ namespace XoClock
         bool _highlightBorder = false; // flag used by Blink timer to flash border to ack clipboard copy
         Brush _defaultBorder;
         DispatcherTimer _blinkBorderTimer;
-        double _cornerRadius;
         bool _isBold = false;
         readonly MotionGenerator _motionGenerator;
 
@@ -53,14 +52,7 @@ namespace XoClock
 
         private void LoadColor()
         {
-            _cornerRadius = MyBorder.CornerRadius.BottomLeft;
-
-            _styleConfig = new StyleConfig();
-            _styleConfig.FontColor = ConfigurationManager.AppSettings.Get("FontColor");
-            _styleConfig.TextDropShadowColor = ConfigurationManager.AppSettings.Get("TextDropShadowColor");
-            _styleConfig.bgImagePath = ConfigurationManager.AppSettings.Get("BgImage");
-            _styleConfig.BgColor = ConfigurationManager.AppSettings.Get("BgColor");
-
+            _styleConfig = StyleConfig.Load();
             if (!string.IsNullOrEmpty(_styleConfig.FontColor))
             {
                 _log.Debug("Loaded color from config file: FontColor=" + _styleConfig.FontColor);
@@ -110,6 +102,7 @@ namespace XoClock
                 SolidColorBrush backgroundBrush = CreateBrush(_styleConfig.BgColor);
                 MyBorder.Background = backgroundBrush;
             }
+            MyBorder.Background.Opacity = _styleConfig.BackgroundOpacity;
         }
 
         private SolidColorBrush CreateBrush(string htmlColor)
@@ -226,18 +219,18 @@ namespace XoClock
             currentRadius.TopRight = 0;
             if (Left <= 0 )
             {
-                currentRadius.BottomRight = _cornerRadius;
+                currentRadius.BottomRight = _styleConfig.CornerRadius;
                 currentRadius.BottomLeft = 0;
             }
             else if (Left >= RightBorderOfScreen)
             {
                 currentRadius.BottomRight = 0;
-                currentRadius.BottomLeft = _cornerRadius;
+                currentRadius.BottomLeft = _styleConfig.CornerRadius;
             }
             else
             {
-                currentRadius.BottomLeft = _cornerRadius;
-                currentRadius.BottomRight = _cornerRadius;
+                currentRadius.BottomLeft = _styleConfig.CornerRadius;
+                currentRadius.BottomRight = _styleConfig.CornerRadius;
             }
             MyBorder.CornerRadius = currentRadius;
 
@@ -451,8 +444,8 @@ namespace XoClock
 
         private void ResetBorder()
         {
-            MyBorder.CornerRadius = new CornerRadius(_cornerRadius);
-            MyBorder.BorderThickness = new Thickness(3);
+            MyBorder.CornerRadius = new CornerRadius(_styleConfig.CornerRadius);
+            MyBorder.BorderThickness = new Thickness(_styleConfig.BorderThickness);
         }
 
         public double HorizontalCenter
