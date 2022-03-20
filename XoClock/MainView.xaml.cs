@@ -28,6 +28,11 @@ namespace XoClock
         bool _highlightBorder = false; // flag used by Blink timer to flash border to ack clipboard copy
         Brush _defaultBorder;
         DispatcherTimer _blinkBorderTimer;
+        int verticalCounter = 0;
+        int horizontalCounter = 0;
+        double _cornerRadius;
+        bool _isBold = false;
+
 
         public MainView()
         {
@@ -45,7 +50,6 @@ namespace XoClock
             StartBlinker();
         }
 
-        double _cornerRadius;
 
         private void LoadColor()
         {
@@ -162,6 +166,7 @@ namespace XoClock
             MoveToTop();
             MoveToRight();
             MoveToRight();
+            UpdateCorners();
         }
 
         private void PipeServerEntryPoint()
@@ -204,12 +209,37 @@ namespace XoClock
                     Left += currentPosition.X - _lastPosition.X;
                     Top += currentPosition.Y - _lastPosition.Y;
                     _lastPosition = currentPosition;
+                    UpdateCorners();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     _log.Error(ex);
                 }
             }
+        }
+
+        private void UpdateCorners()
+        {
+            var currentRadius = MyBorder.CornerRadius;
+            currentRadius.TopLeft = 0;
+            currentRadius.TopRight = 0;
+            if (Left <= 0 )
+            {
+                currentRadius.BottomRight = _cornerRadius;
+                currentRadius.BottomLeft = 0;
+            }
+            else if (Left >= RightBorderOfScreen)
+            {
+                currentRadius.BottomRight = 0;
+                currentRadius.BottomLeft = _cornerRadius;
+            }
+            else
+            {
+                currentRadius.BottomLeft = _cornerRadius;
+                currentRadius.BottomRight = _cornerRadius;
+            }
+            MyBorder.CornerRadius = currentRadius;
+
         }
 
         private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -224,8 +254,6 @@ namespace XoClock
                 TxtDate.Visibility = Visibility.Collapsed;
             }
         }
-
-        bool _isBold = false;
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -317,6 +345,7 @@ namespace XoClock
                     else
                     {
                         SwitchTopMost();
+                        FlashBorder();
                     }
                     break;
                 case Key.F1:
@@ -408,6 +437,7 @@ namespace XoClock
                     Left++;
                     break;
             }
+            UpdateCorners();
         }
 
         private bool IsArrow(Key key)
@@ -444,47 +474,39 @@ namespace XoClock
                
         private void MoveToLeft()
         {
+            _log.Debug("MoveToLeft");
             if (Left <= HorizontalCenter)
             {
                 Left = 0;
-                var currentRadius = MyBorder.CornerRadius;
-                currentRadius.BottomRight = _cornerRadius;
-                currentRadius.BottomLeft = 0;
-                currentRadius.TopLeft = 0;
-                MyBorder.CornerRadius = currentRadius;
             }
             else
             {
                 Left = HorizontalCenter;
-                var currentRadius = MyBorder.CornerRadius;
-                currentRadius.BottomLeft = _cornerRadius;
-                currentRadius.BottomRight = _cornerRadius;
-                MyBorder.CornerRadius = currentRadius;
             }
         }
 
         private void MoveToRight()
         {
+            _log.Debug("MoveToRight");
             if (Left < HorizontalCenter)
             {
                 Left = HorizontalCenter;
-                var currentRadius = MyBorder.CornerRadius;
-                currentRadius.BottomLeft = _cornerRadius;
-                currentRadius.BottomRight = _cornerRadius;
-                MyBorder.CornerRadius = currentRadius;
             }
             else
+            {
+                Left = RightBorderOfScreen;
+            }
+        }
+
+        public double RightBorderOfScreen 
+        { 
+            get
             {
                 double screenWidth = SystemParameters.PrimaryScreenWidth;
                 var effect = MyBorder.Effect as DropShadowEffect;
                 double offset = effect.BlurRadius;// + MyBorder.CornerRadius.TopRight;
-                Left = screenWidth - Width + offset;
-                var currentRadius = MyBorder.CornerRadius;
-                currentRadius.TopRight = 0;
-                currentRadius.BottomRight = 0;
-                currentRadius.BottomLeft = _cornerRadius;
-                MyBorder.CornerRadius = currentRadius;
-
+                double ret = screenWidth - Width + offset;
+                return ret;
             }
         }
 
@@ -502,9 +524,6 @@ namespace XoClock
             currentRadius.TopRight = 0;
             MyBorder.CornerRadius = currentRadius;
         }
-
-        int verticalCounter = 0;
-        int horizontalCounter = 0;
 
         private void SwitchDisplayDate()
         {
@@ -534,6 +553,7 @@ namespace XoClock
         private void SwitchTopMost()
         {
             Topmost = !Topmost;
+            _log.Debug("Topmost: "+ Topmost);
             _lastTopMost = Topmost;
         }
 
@@ -565,7 +585,6 @@ namespace XoClock
         {
             _log.Debug("MouseLeave!");
         }
-
 
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {

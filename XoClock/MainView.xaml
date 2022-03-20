@@ -25,7 +25,7 @@
         MouseDoubleClick="Window_MouseDoubleClick"
         KeyDown="Window_KeyDown"
         KeyUp="Window_KeyUp">
-       <Border Name="MyBorder" BorderBrush="DimGray" BorderThickness="3" CornerRadius="20" Margin="0 0 5 5">
+       <Border Name="MyBorder" BorderBrush="DimGray" BorderThickness="3" CornerRadius="0 0 20 20" Margin="0 0 5 5">
             <Border.Effect>
                 <DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="4"></DropShadowEffect>
             </Border.Effect>
