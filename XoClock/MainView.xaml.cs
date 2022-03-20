@@ -15,11 +15,6 @@ namespace XoClock
     public partial class MainView : Window
     {
         private const string URI_FILE_PREFIX = "file://";
-        private const int MOVE_FAST_TRIGGER = 5;
-        private const int MOVE_ULTRA_FAST_TRIGGER = 20;
-        private const int MOVE_ULTRA_FAST_SPEED = 50;
-        int verticalCounter = 0;
-        int horizontalCounter = 0;
         private static ILogger _log = LogManager.GetCurrentClassLogger();
         bool _isMoving = false;
         Point _lastPosition;
@@ -35,11 +30,12 @@ namespace XoClock
         DispatcherTimer _blinkBorderTimer;
         double _cornerRadius;
         bool _isBold = false;
-
+        readonly MotionGenerator _motionGenerator;
 
         public MainView()
         {
             InitializeComponent();
+            _motionGenerator = new MotionGenerator();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -260,6 +256,7 @@ namespace XoClock
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
+            double offset;
             Key key = e.Key;
             if (!IsArrow(key))
             {
@@ -387,23 +384,8 @@ namespace XoClock
                         MoveToTop();
                         break;
                     }
-                    if (verticalCounter>0)
-                    {
-                        verticalCounter = 0;
-                    }
-                    verticalCounter--;
-                    if (verticalCounter < -1 * MOVE_ULTRA_FAST_TRIGGER)
-                    {
-                        Top -= MOVE_ULTRA_FAST_SPEED;
-                    }
-                    else if (verticalCounter<-1* MOVE_FAST_TRIGGER)
-                    {
-                        Top -= 10;
-                    }
-                    else
-                    {
-                        Top--;
-                    }
+                    offset = _motionGenerator.Continue();
+                    Top -= offset;
                     if (Top<0)
                     {
                         Top = 0;
@@ -415,23 +397,8 @@ namespace XoClock
                         MoveToBottom();
                         break;
                     }
-                    if (verticalCounter < 0)
-                    {
-                        verticalCounter = 0;
-                    }
-                    verticalCounter++;
-                    if (verticalCounter > MOVE_ULTRA_FAST_TRIGGER)
-                    {
-                        Top += 50;
-                    }
-                    else if (verticalCounter > MOVE_FAST_TRIGGER)
-                    {
-                        Top += 10;
-                    }
-                    else
-                    {
-                        Top++;
-                    }
+                    offset = _motionGenerator.Continue();
+                    Top += offset;
                     break;
                 case Key.Left:
                     if (_isShiftDown)
@@ -439,8 +406,12 @@ namespace XoClock
                         MoveToLeft();
                         break;
                     }
-                    verticalCounter = 0;
-                    Left--;
+                    offset = _motionGenerator.Continue();
+                    Left -= offset;
+                    if (Left < 0)
+                    {
+                        Left = 0;
+                    }
                     break;
                 case Key.Right:
                     if (_isShiftDown)
@@ -448,8 +419,8 @@ namespace XoClock
                         MoveToRight();
                         break;
                     }
-                    verticalCounter = 0;
-                    Left++;
+                    offset = _motionGenerator.Continue();
+                    Left += offset;
                     break;
             }
             UpdateCorners();
@@ -606,6 +577,7 @@ namespace XoClock
             _lastKey = Key.None;
             Key key = e.Key;
             _log.Debug("KeyUp  : " + key);
+            _motionGenerator.Stop();
             switch (key)
             {
                 case Key.LeftShift:
