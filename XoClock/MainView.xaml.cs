@@ -32,6 +32,8 @@ namespace XoClock
         bool _isBold = false;
         readonly MotionGenerator _motionGenerator;
 
+        StyleConfig _styleConfig;
+
         public MainView()
         {
             InitializeComponent();
@@ -49,48 +51,49 @@ namespace XoClock
             StartBlinker();
         }
 
-
         private void LoadColor()
         {
             _cornerRadius = MyBorder.CornerRadius.BottomLeft;
-            string htmlColor = ConfigurationManager.AppSettings.Get("FontColor");
-            if (!string.IsNullOrEmpty(htmlColor))
+
+            _styleConfig = new StyleConfig();
+            _styleConfig.FontColor = ConfigurationManager.AppSettings.Get("FontColor");
+            _styleConfig.TextDropShadowColor = ConfigurationManager.AppSettings.Get("TextDropShadowColor");
+            _styleConfig.bgImagePath = ConfigurationManager.AppSettings.Get("BgImage");
+            _styleConfig.BgColor = ConfigurationManager.AppSettings.Get("BgColor");
+
+            if (!string.IsNullOrEmpty(_styleConfig.FontColor))
             {
-                _log.Debug("Loaded color from config file: FontColor=" + htmlColor);
-                SolidColorBrush brush = CreateBrush(htmlColor);
+                _log.Debug("Loaded color from config file: FontColor=" + _styleConfig.FontColor);
+                SolidColorBrush brush = CreateBrush(_styleConfig.FontColor);
                 TxtTime.Foreground = brush;
                 TxtDate.Foreground = brush;
-                var shadow = TxtTime.Effect as DropShadowEffect;
-               // shadow.Color = CreateColor(htmlColor);
             }
             else
             {
                 _log.Debug("FontColor is not set => using default");
             }
-            htmlColor = ConfigurationManager.AppSettings.Get("TextDropShadowColor");
-            if (!string.IsNullOrEmpty(htmlColor))
+            if (!string.IsNullOrEmpty(_styleConfig.TextDropShadowColor))
             {
-                _log.Debug("Loaded color from config file: TextDropShadowColor=" + htmlColor);
+                _log.Debug("Loaded color from config file: TextDropShadowColor=" + _styleConfig.TextDropShadowColor);
                 var shadow = TxtTime.Effect as DropShadowEffect;
-                shadow.Color = CreateColor(htmlColor);
+                shadow.Color = CreateColor(_styleConfig.TextDropShadowColor);
                 shadow = TxtDate.Effect as DropShadowEffect;
-                shadow.Color = CreateColor(htmlColor);
+                shadow.Color = CreateColor(_styleConfig.TextDropShadowColor);
             }
-            string bgImagePath = ConfigurationManager.AppSettings.Get("BgImage");
-            if (!string.IsNullOrEmpty(htmlColor))
+            if (!string.IsNullOrEmpty(_styleConfig.bgImagePath))
             {
-                _log.Debug("Loaded bg image from config file: BgImage=" + bgImagePath);
-                if (File.Exists(bgImagePath))
+                _log.Debug("Loaded bg image from config file: BgImage=" + _styleConfig.bgImagePath);
+                if (File.Exists(_styleConfig.bgImagePath))
                 {
                     string currentDirectory = Directory.GetCurrentDirectory();
                     Uri uriSource;
-                    if (bgImagePath.Contains(":"))
+                    if (_styleConfig.bgImagePath.Contains(":"))
                     {
-                        uriSource = new Uri(URI_FILE_PREFIX + bgImagePath);
+                        uriSource = new Uri(URI_FILE_PREFIX + _styleConfig.bgImagePath);
                     }
                     else
                     {
-                        uriSource = new Uri(URI_FILE_PREFIX + Path.Combine(currentDirectory, bgImagePath));
+                        uriSource = new Uri(URI_FILE_PREFIX + Path.Combine(currentDirectory, _styleConfig.bgImagePath));
                     }
                     _log.Debug("uriSource: "+ uriSource);
                     var bitmapImage = new BitmapImage(uriSource);
@@ -98,14 +101,13 @@ namespace XoClock
                 }
                 else
                 {
-                    _log.Error("file not found: " + bgImagePath);
+                    _log.Error("file not found: " + _styleConfig.bgImagePath);
                 }
             }
-            htmlColor = ConfigurationManager.AppSettings.Get("BgColor");
-            if (!string.IsNullOrEmpty(htmlColor))
+            if (!string.IsNullOrEmpty(_styleConfig.BgColor))
             {
-                _log.Debug("Loaded color from config file: BgColor=" + htmlColor);
-                SolidColorBrush backgroundBrush = CreateBrush(htmlColor);
+                _log.Debug("Loaded color from config file: BgColor=" + _styleConfig.BgColor);
+                SolidColorBrush backgroundBrush = CreateBrush(_styleConfig.BgColor);
                 MyBorder.Background = backgroundBrush;
             }
         }
