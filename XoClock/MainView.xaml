@@ -37,7 +37,7 @@
                 <TextBlock Name="TxtTime"
                        TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
                        ClipToBounds="True"  Padding="2, 0, 2, 0" Margin="0" 
-                       Foreground="AliceBlue"
+                       Foreground="#FFDF0C28"
                        FontFamily="./Fonts/#Software Tester 7"
                        FontWeight="Normal"
                        Text="{Binding Path=DisplayTime, FallbackValue='08:54:01'}">
