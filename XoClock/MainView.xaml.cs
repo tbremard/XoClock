@@ -102,10 +102,9 @@ namespace XoClock
                 MyBorder.Background = backgroundBrush;
             }
             MyBorder.Background.Opacity = _styleConfig.BackgroundOpacity;
-            MyBorder.CornerRadius = new CornerRadius(_styleConfig.CornerRadius);
+            MyBorder.CornerRadius = new CornerRadius(_styleConfig.TopCornerRadius, _styleConfig.TopCornerRadius, _styleConfig.BottomCornerRadius, _styleConfig.BottomCornerRadius);
             MyBorder.BorderThickness = new Thickness(_styleConfig.BorderThickness);
-
-
+            MyBorder.BorderBrush = CreateBrush(_styleConfig.BorderColor);
         }
 
         private SolidColorBrush CreateBrush(string htmlColor)
@@ -218,22 +217,31 @@ namespace XoClock
         private void UpdateCorners()
         {
             var currentRadius = MyBorder.CornerRadius;
-            currentRadius.TopLeft = 0;
-            currentRadius.TopRight = 0;
+            if (Top<=0)
+            {
+                currentRadius.TopLeft = 0;
+                currentRadius.TopRight = 0;
+            }
+            else
+            {
+                currentRadius.TopLeft = _styleConfig.TopCornerRadius;
+                currentRadius.TopRight = _styleConfig.TopCornerRadius; 
+            }
             if (Left <= 0 )
             {
-                currentRadius.BottomRight = _styleConfig.CornerRadius;
+                currentRadius.BottomRight = _styleConfig.BottomCornerRadius;
                 currentRadius.BottomLeft = 0;
+                currentRadius.TopLeft = 0;
             }
             else if (Left >= RightBorderOfScreen)
             {
                 currentRadius.BottomRight = 0;
-                currentRadius.BottomLeft = _styleConfig.CornerRadius;
+                currentRadius.BottomLeft = _styleConfig.BottomCornerRadius;
             }
             else
             {
-                currentRadius.BottomLeft = _styleConfig.CornerRadius;
-                currentRadius.BottomRight = _styleConfig.CornerRadius;
+                currentRadius.BottomLeft = _styleConfig.BottomCornerRadius;
+                currentRadius.BottomRight = _styleConfig.BottomCornerRadius;
             }
             MyBorder.CornerRadius = currentRadius;
 
@@ -447,7 +455,7 @@ namespace XoClock
 
         private void ResetBorder()
         {
-            MyBorder.CornerRadius = new CornerRadius(_styleConfig.CornerRadius);
+            MyBorder.CornerRadius = new CornerRadius(_styleConfig.BottomCornerRadius);
             MyBorder.BorderThickness = new Thickness(_styleConfig.BorderThickness);
         }
 
