@@ -30,7 +30,6 @@ namespace XoClock
         DispatcherTimer _blinkBorderTimer;
         bool _isBold = false;
         readonly MotionGenerator _motionGenerator;
-
         StyleConfig _styleConfig;
 
         public MainView()
@@ -72,20 +71,20 @@ namespace XoClock
                 shadow = TxtDate.Effect as DropShadowEffect;
                 shadow.Color = CreateColor(_styleConfig.TextDropShadowColor);
             }
-            if (!string.IsNullOrEmpty(_styleConfig.bgImagePath))
+            if (!string.IsNullOrEmpty(_styleConfig.BackgroundImage))
             {
-                _log.Debug("Loaded bg image from config file: BgImage=" + _styleConfig.bgImagePath);
-                if (File.Exists(_styleConfig.bgImagePath))
+                _log.Debug("Loaded bg image from config file: BgImage=" + _styleConfig.BackgroundImage);
+                if (File.Exists(_styleConfig.BackgroundImage))
                 {
                     string currentDirectory = Directory.GetCurrentDirectory();
                     Uri uriSource;
-                    if (_styleConfig.bgImagePath.Contains(":"))
+                    if (_styleConfig.BackgroundImage.Contains(":"))
                     {
-                        uriSource = new Uri(URI_FILE_PREFIX + _styleConfig.bgImagePath);
+                        uriSource = new Uri(URI_FILE_PREFIX + _styleConfig.BackgroundImage);
                     }
                     else
                     {
-                        uriSource = new Uri(URI_FILE_PREFIX + Path.Combine(currentDirectory, _styleConfig.bgImagePath));
+                        uriSource = new Uri(URI_FILE_PREFIX + Path.Combine(currentDirectory, _styleConfig.BackgroundImage));
                     }
                     _log.Debug("uriSource: "+ uriSource);
                     var bitmapImage = new BitmapImage(uriSource);
@@ -93,16 +92,20 @@ namespace XoClock
                 }
                 else
                 {
-                    _log.Error("file not found: " + _styleConfig.bgImagePath);
+                    _log.Error("file not found: " + _styleConfig.BackgroundImage);
                 }
             }
-            if (!string.IsNullOrEmpty(_styleConfig.BgColor))
+            if (!string.IsNullOrEmpty(_styleConfig.BackgroundColor))
             {
-                _log.Debug("Loaded color from config file: BgColor=" + _styleConfig.BgColor);
-                SolidColorBrush backgroundBrush = CreateBrush(_styleConfig.BgColor);
+                _log.Debug("Loaded color from config file: BgColor=" + _styleConfig.BackgroundColor);
+                SolidColorBrush backgroundBrush = CreateBrush(_styleConfig.BackgroundColor);
                 MyBorder.Background = backgroundBrush;
             }
             MyBorder.Background.Opacity = _styleConfig.BackgroundOpacity;
+            MyBorder.CornerRadius = new CornerRadius(_styleConfig.CornerRadius);
+            MyBorder.BorderThickness = new Thickness(_styleConfig.BorderThickness);
+
+
         }
 
         private SolidColorBrush CreateBrush(string htmlColor)
