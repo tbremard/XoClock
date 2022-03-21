@@ -13,6 +13,11 @@ namespace XoClock
         public double BorderThickness;
         public double BackgroundOpacity;
         public string BorderColor;
+        /// <summary>
+        /// if DevMode is set to true, configuration file is reloaded every 300ms
+        /// if DevMode is set to false, configuration file is loaded once at startup
+        /// </summary>
+        public bool DevMode;
 
         public static StyleConfig Load()
         {
@@ -29,9 +34,9 @@ namespace XoClock
             return ret;
         }
 
-        private static string LoadString(string color)
+        private static string LoadString(string key)
         {
-            return ConfigurationManager.AppSettings.Get(color);
+            return ConfigurationManager.AppSettings.Get(key);
         }
 
         private static double LoadDouble(string key, double defaultValue)
@@ -50,7 +55,6 @@ namespace XoClock
                 }
             }
             return ret;
-
         }
     }
 }
