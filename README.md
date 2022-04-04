@@ -15,6 +15,10 @@ Style with shadow:
 
 ![Time](XoClock/ScreenShot/shadow.jpg "shadow")
 
+Style customizable:
+
+![Time](XoClock/ScreenShot/customizable.jpg "customizable")
+
 Chronometer Mode:
 
 ![Chrono](XoClock/ScreenShot/chronometer.jpg "Chronometer mode")
