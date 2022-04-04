@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Threading;
@@ -28,9 +27,9 @@ namespace XoClock
         bool _highlightBorder = false; // flag used by Blink timer to flash border to ack clipboard copy
         Brush _defaultBorder;
         DispatcherTimer _blinkBorderTimer;
-        double _cornerRadius;
         bool _isBold = false;
         readonly MotionGenerator _motionGenerator;
+        StyleConfig _style;
 
         public MainView()
         {
@@ -40,7 +39,7 @@ namespace XoClock
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            LoadColor();
+            LoadStyle();
             PositionOnTopRightCorner();
             var core = new TimerCore();
             model = new TimerModel(core);
@@ -49,48 +48,42 @@ namespace XoClock
             StartBlinker();
         }
 
-
-        private void LoadColor()
+        private void LoadStyle()
         {
-            _cornerRadius = MyBorder.CornerRadius.BottomLeft;
-            string htmlColor = ConfigurationManager.AppSettings.Get("FontColor");
-            if (!string.IsNullOrEmpty(htmlColor))
+            _style = StyleConfig.Load();
+            if (!string.IsNullOrEmpty(_style.FontColor))
             {
-                _log.Debug("Loaded color from config file: FontColor=" + htmlColor);
-                SolidColorBrush brush = CreateBrush(htmlColor);
+                _log.Debug("Loaded color from config file: FontColor=" + _style.FontColor);
+                SolidColorBrush brush = CreateBrush(_style.FontColor);
                 TxtTime.Foreground = brush;
                 TxtDate.Foreground = brush;
-                var shadow = TxtTime.Effect as DropShadowEffect;
-               // shadow.Color = CreateColor(htmlColor);
             }
             else
             {
                 _log.Debug("FontColor is not set => using default");
             }
-            htmlColor = ConfigurationManager.AppSettings.Get("TextDropShadowColor");
-            if (!string.IsNullOrEmpty(htmlColor))
+            if (!string.IsNullOrEmpty(_style.TextDropShadowColor))
             {
-                _log.Debug("Loaded color from config file: TextDropShadowColor=" + htmlColor);
+                _log.Debug("Loaded color from config file: TextDropShadowColor=" + _style.TextDropShadowColor);
                 var shadow = TxtTime.Effect as DropShadowEffect;
-                shadow.Color = CreateColor(htmlColor);
+                shadow.Color = CreateColor(_style.TextDropShadowColor);
                 shadow = TxtDate.Effect as DropShadowEffect;
-                shadow.Color = CreateColor(htmlColor);
+                shadow.Color = CreateColor(_style.TextDropShadowColor);
             }
-            string bgImagePath = ConfigurationManager.AppSettings.Get("BgImage");
-            if (!string.IsNullOrEmpty(htmlColor))
+            if (!string.IsNullOrEmpty(_style.BackgroundImage))
             {
-                _log.Debug("Loaded bg image from config file: BgImage=" + bgImagePath);
-                if (File.Exists(bgImagePath))
+                _log.Debug("Loaded bg image from config file: BgImage=" + _style.BackgroundImage);
+                if (File.Exists(_style.BackgroundImage))
                 {
                     string currentDirectory = Directory.GetCurrentDirectory();
                     Uri uriSource;
-                    if (bgImagePath.Contains(":"))
+                    if (_style.BackgroundImage.Contains(":"))
                     {
-                        uriSource = new Uri(URI_FILE_PREFIX + bgImagePath);
+                        uriSource = new Uri(URI_FILE_PREFIX + _style.BackgroundImage);
                     }
                     else
                     {
-                        uriSource = new Uri(URI_FILE_PREFIX + Path.Combine(currentDirectory, bgImagePath));
+                        uriSource = new Uri(URI_FILE_PREFIX + Path.Combine(currentDirectory, _style.BackgroundImage));
                     }
                     _log.Debug("uriSource: "+ uriSource);
                     var bitmapImage = new BitmapImage(uriSource);
@@ -98,16 +91,19 @@ namespace XoClock
                 }
                 else
                 {
-                    _log.Error("file not found: " + bgImagePath);
+                    _log.Error("file not found: " + _style.BackgroundImage);
                 }
             }
-            htmlColor = ConfigurationManager.AppSettings.Get("BgColor");
-            if (!string.IsNullOrEmpty(htmlColor))
+            if (!string.IsNullOrEmpty(_style.BackgroundColor))
             {
-                _log.Debug("Loaded color from config file: BgColor=" + htmlColor);
-                SolidColorBrush backgroundBrush = CreateBrush(htmlColor);
+                _log.Debug("Loaded color from config file: BgColor=" + _style.BackgroundColor);
+                SolidColorBrush backgroundBrush = CreateBrush(_style.BackgroundColor);
                 MyBorder.Background = backgroundBrush;
             }
+            MyBorder.Background.Opacity = _style.BackgroundOpacity;
+            MyBorder.CornerRadius = new CornerRadius(_style.TopCornerRadius, _style.TopCornerRadius, _style.BottomCornerRadius, _style.BottomCornerRadius);
+            MyBorder.BorderThickness = new Thickness(_style.BorderThickness);
+            MyBorder.BorderBrush = CreateBrush(_style.BorderColor);
         }
 
         private SolidColorBrush CreateBrush(string htmlColor)
@@ -220,22 +216,31 @@ namespace XoClock
         private void UpdateCorners()
         {
             var currentRadius = MyBorder.CornerRadius;
-            currentRadius.TopLeft = 0;
-            currentRadius.TopRight = 0;
+            if (Top<=0)
+            {
+                currentRadius.TopLeft = 0;
+                currentRadius.TopRight = 0;
+            }
+            else
+            {
+                currentRadius.TopLeft = _style.TopCornerRadius;
+                currentRadius.TopRight = _style.TopCornerRadius; 
+            }
             if (Left <= 0 )
             {
-                currentRadius.BottomRight = _cornerRadius;
+                currentRadius.BottomRight = _style.BottomCornerRadius;
                 currentRadius.BottomLeft = 0;
+                currentRadius.TopLeft = 0;
             }
             else if (Left >= RightBorderOfScreen)
             {
                 currentRadius.BottomRight = 0;
-                currentRadius.BottomLeft = _cornerRadius;
+                currentRadius.BottomLeft = _style.BottomCornerRadius;
             }
             else
             {
-                currentRadius.BottomLeft = _cornerRadius;
-                currentRadius.BottomRight = _cornerRadius;
+                currentRadius.BottomLeft = _style.BottomCornerRadius;
+                currentRadius.BottomRight = _style.BottomCornerRadius;
             }
             MyBorder.CornerRadius = currentRadius;
 
@@ -369,6 +374,9 @@ namespace XoClock
                     this.ShowInTaskbar = true;
                     Topmost = false;
                     break;
+                case Key.F5:
+                    LoadStyle();
+                    break;
                 case Key.Subtract:
                     OpacityDecrease();
                     break;
@@ -449,8 +457,8 @@ namespace XoClock
 
         private void ResetBorder()
         {
-            MyBorder.CornerRadius = new CornerRadius(_cornerRadius);
-            MyBorder.BorderThickness = new Thickness(3);
+            MyBorder.CornerRadius = new CornerRadius(_style.BottomCornerRadius);
+            MyBorder.BorderThickness = new Thickness(_style.BorderThickness);
         }
 
         public double HorizontalCenter

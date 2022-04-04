@@ -1,0 +1,12 @@
+﻿{
+  "FontColor": "#FF2879FF",
+  "TextDropShadowColor": "#99c0ff",
+  "BackgroundImage": "BgImage\\black-gradient.jpg",
+  "BackgroundColor": null,
+  "BottomCornerRadius": 20.0,
+  "TopCornerRadius": 10.0,
+  "BorderThickness": 3.0,
+  "BorderColor": "#FF696969",
+  "BackgroundOpacity": 1.0,
+  "DevMode": false
+}

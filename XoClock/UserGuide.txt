@@ -5,9 +5,9 @@ t.bremard@gmail.com
 2 modes : 
 	+ Mode Clock  : Display current time and date with precision of 1 sec.
 	+ Mode Chrono : Measure time withe precision of 0.01 sec
-Double click to switch mode between Clock and Chrono
+Double click to switch between Clock and Chrono modes
 
-Style: To change color and background image, open with text editor: XoClock.dll.config
+Style: To change color and background image, open with text editor: style.json (see below)
 
 Commands:
 KeyBoard: (letters are not case sensitive - ie d=D)
@@ -28,13 +28,14 @@ KeyBoard: (letters are not case sensitive - ie d=D)
 	F1: Maximize
 	F2: Normal
 	F3: Minimize
+	F5: Refresh style from file "style.json" in current directory
 	+ : Increase Opacity
 	- : Decrease Opacity
 }
 Mouse
 {
-	Wheel          : set opacity
-	DoubleClick    : switch mode between clock and chronometer
+	Wheel          : Set opacity
+	DoubleClick    : Switch mode between Clock and Chrono
 	LeftButtonPress: Drag window and change location
 }
 
@@ -49,3 +50,32 @@ xoclock /c reset_chrono
 xoclock /c mode_clock
 xoclock /c kill
 -----------------------
+
+------------Style Configuration in file: style.json
+            Style is loaded at startup, and can be refreshed via Hot Reload via F5 during execution
+
+		<!--Colors are ARGB : Alpha Red Green Blue. 
+		Alpha is opacity: 
+		00 is transparent 
+		FF is opaque-->
+		<!--FontColor sets color of text Red-Electro:FFFFDF0C28 Blue:2879FF-->
+		key="FontColor" value="#FF2879FF"
+		<!--TextDropShadowColor color used to highlight time and date -->
+		key="TextDropShadowColor" value="#99c0ff"/>
+		
+		<!--Uncomment BackgroundColor and Comment BgImage to set specific color for background
+		if Alpha byte of color is set to 00, then clock has no background
+		key="BackgroundColor" value="#FFFFA0F0"/> -->
+		
+		<!--BgImage sets background image for the clock, if it is set, BgColor is ignored-->
+		key="BackgroundImage" value="BgImage\black-gradient.jpg"/>
+		<!-- Corner for bottom (not settable for top)-->
+		key="TopCornerRadius" value="10"/>
+		key="BottomCornerRadius" value="20"/>
+		<!--BackgroundOpacity: 
+			0   = totally transparent (you see only time of the clock,  and border)
+			1   = totally visible 
+			0.5 = half visible -->
+		key="BackgroundOpacity" value="1"
+		key="BorderThickness" value="3"
+		key="BorderColor" value="#FF696969"
