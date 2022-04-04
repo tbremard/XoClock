@@ -35,8 +35,12 @@
             <Viewbox Stretch="Uniform" Margin="0" Name="viewbox">
             <StackPanel>
                 <TextBlock Name="TxtTime"
-                       TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
-                       ClipToBounds="True"  Padding="2, 0, 2, 0" Margin="0" 
+                       TextOptions.TextRenderingMode="Grayscale" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center"
+                       ClipToBounds="True"  
+                       Padding="2, 0, 2, 0" 
+                       Margin="0" 
                        Foreground="#FFDF0C28"
                        FontFamily="./Fonts/#Software Tester 7"
                        FontWeight="Normal"
@@ -46,8 +50,12 @@
                     </TextBlock.Effect>
                 </TextBlock>
                 <TextBlock Name="TxtDate"
-                       TextOptions.TextRenderingMode="Grayscale" HorizontalAlignment="Center" VerticalAlignment="Center"
-                       ClipToBounds="True"  Padding="2, 0, 2, 0" Margin="0" 
+                       TextOptions.TextRenderingMode="Grayscale" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center"
+                       ClipToBounds="True"  
+                       Padding="2, 0, 2, 0" 
+                       Margin="0" 
                        Foreground="AliceBlue"
                        FontFamily="./Fonts/#Software Tester 7"
                        FontSize="6"

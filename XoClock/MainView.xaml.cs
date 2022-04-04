@@ -30,7 +30,7 @@ namespace XoClock
         DispatcherTimer _blinkBorderTimer;
         bool _isBold = false;
         readonly MotionGenerator _motionGenerator;
-        StyleConfig _styleConfig;
+        StyleConfig _style;
 
         public MainView()
         {
@@ -40,7 +40,7 @@ namespace XoClock
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            LoadColor();
+            LoadStyle();
             PositionOnTopRightCorner();
             var core = new TimerCore();
             model = new TimerModel(core);
@@ -49,13 +49,13 @@ namespace XoClock
             StartBlinker();
         }
 
-        private void LoadColor()
+        private void LoadStyle()
         {
-            _styleConfig = StyleConfig.Load();
-            if (!string.IsNullOrEmpty(_styleConfig.FontColor))
+            _style = StyleConfig.Load();
+            if (!string.IsNullOrEmpty(_style.FontColor))
             {
-                _log.Debug("Loaded color from config file: FontColor=" + _styleConfig.FontColor);
-                SolidColorBrush brush = CreateBrush(_styleConfig.FontColor);
+                _log.Debug("Loaded color from config file: FontColor=" + _style.FontColor);
+                SolidColorBrush brush = CreateBrush(_style.FontColor);
                 TxtTime.Foreground = brush;
                 TxtDate.Foreground = brush;
             }
@@ -63,28 +63,28 @@ namespace XoClock
             {
                 _log.Debug("FontColor is not set => using default");
             }
-            if (!string.IsNullOrEmpty(_styleConfig.TextDropShadowColor))
+            if (!string.IsNullOrEmpty(_style.TextDropShadowColor))
             {
-                _log.Debug("Loaded color from config file: TextDropShadowColor=" + _styleConfig.TextDropShadowColor);
+                _log.Debug("Loaded color from config file: TextDropShadowColor=" + _style.TextDropShadowColor);
                 var shadow = TxtTime.Effect as DropShadowEffect;
-                shadow.Color = CreateColor(_styleConfig.TextDropShadowColor);
+                shadow.Color = CreateColor(_style.TextDropShadowColor);
                 shadow = TxtDate.Effect as DropShadowEffect;
-                shadow.Color = CreateColor(_styleConfig.TextDropShadowColor);
+                shadow.Color = CreateColor(_style.TextDropShadowColor);
             }
-            if (!string.IsNullOrEmpty(_styleConfig.BackgroundImage))
+            if (!string.IsNullOrEmpty(_style.BackgroundImage))
             {
-                _log.Debug("Loaded bg image from config file: BgImage=" + _styleConfig.BackgroundImage);
-                if (File.Exists(_styleConfig.BackgroundImage))
+                _log.Debug("Loaded bg image from config file: BgImage=" + _style.BackgroundImage);
+                if (File.Exists(_style.BackgroundImage))
                 {
                     string currentDirectory = Directory.GetCurrentDirectory();
                     Uri uriSource;
-                    if (_styleConfig.BackgroundImage.Contains(":"))
+                    if (_style.BackgroundImage.Contains(":"))
                     {
-                        uriSource = new Uri(URI_FILE_PREFIX + _styleConfig.BackgroundImage);
+                        uriSource = new Uri(URI_FILE_PREFIX + _style.BackgroundImage);
                     }
                     else
                     {
-                        uriSource = new Uri(URI_FILE_PREFIX + Path.Combine(currentDirectory, _styleConfig.BackgroundImage));
+                        uriSource = new Uri(URI_FILE_PREFIX + Path.Combine(currentDirectory, _style.BackgroundImage));
                     }
                     _log.Debug("uriSource: "+ uriSource);
                     var bitmapImage = new BitmapImage(uriSource);
@@ -92,19 +92,19 @@ namespace XoClock
                 }
                 else
                 {
-                    _log.Error("file not found: " + _styleConfig.BackgroundImage);
+                    _log.Error("file not found: " + _style.BackgroundImage);
                 }
             }
-            if (!string.IsNullOrEmpty(_styleConfig.BackgroundColor))
+            if (!string.IsNullOrEmpty(_style.BackgroundColor))
             {
-                _log.Debug("Loaded color from config file: BgColor=" + _styleConfig.BackgroundColor);
-                SolidColorBrush backgroundBrush = CreateBrush(_styleConfig.BackgroundColor);
+                _log.Debug("Loaded color from config file: BgColor=" + _style.BackgroundColor);
+                SolidColorBrush backgroundBrush = CreateBrush(_style.BackgroundColor);
                 MyBorder.Background = backgroundBrush;
             }
-            MyBorder.Background.Opacity = _styleConfig.BackgroundOpacity;
-            MyBorder.CornerRadius = new CornerRadius(_styleConfig.TopCornerRadius, _styleConfig.TopCornerRadius, _styleConfig.BottomCornerRadius, _styleConfig.BottomCornerRadius);
-            MyBorder.BorderThickness = new Thickness(_styleConfig.BorderThickness);
-            MyBorder.BorderBrush = CreateBrush(_styleConfig.BorderColor);
+            MyBorder.Background.Opacity = _style.BackgroundOpacity;
+            MyBorder.CornerRadius = new CornerRadius(_style.TopCornerRadius, _style.TopCornerRadius, _style.BottomCornerRadius, _style.BottomCornerRadius);
+            MyBorder.BorderThickness = new Thickness(_style.BorderThickness);
+            MyBorder.BorderBrush = CreateBrush(_style.BorderColor);
         }
 
         private SolidColorBrush CreateBrush(string htmlColor)
@@ -224,24 +224,24 @@ namespace XoClock
             }
             else
             {
-                currentRadius.TopLeft = _styleConfig.TopCornerRadius;
-                currentRadius.TopRight = _styleConfig.TopCornerRadius; 
+                currentRadius.TopLeft = _style.TopCornerRadius;
+                currentRadius.TopRight = _style.TopCornerRadius; 
             }
             if (Left <= 0 )
             {
-                currentRadius.BottomRight = _styleConfig.BottomCornerRadius;
+                currentRadius.BottomRight = _style.BottomCornerRadius;
                 currentRadius.BottomLeft = 0;
                 currentRadius.TopLeft = 0;
             }
             else if (Left >= RightBorderOfScreen)
             {
                 currentRadius.BottomRight = 0;
-                currentRadius.BottomLeft = _styleConfig.BottomCornerRadius;
+                currentRadius.BottomLeft = _style.BottomCornerRadius;
             }
             else
             {
-                currentRadius.BottomLeft = _styleConfig.BottomCornerRadius;
-                currentRadius.BottomRight = _styleConfig.BottomCornerRadius;
+                currentRadius.BottomLeft = _style.BottomCornerRadius;
+                currentRadius.BottomRight = _style.BottomCornerRadius;
             }
             MyBorder.CornerRadius = currentRadius;
 
@@ -455,8 +455,8 @@ namespace XoClock
 
         private void ResetBorder()
         {
-            MyBorder.CornerRadius = new CornerRadius(_styleConfig.BottomCornerRadius);
-            MyBorder.BorderThickness = new Thickness(_styleConfig.BorderThickness);
+            MyBorder.CornerRadius = new CornerRadius(_style.BottomCornerRadius);
+            MyBorder.BorderThickness = new Thickness(_style.BorderThickness);
         }
 
         public double HorizontalCenter
