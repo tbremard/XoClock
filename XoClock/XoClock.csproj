@@ -39,6 +39,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="NLog" Version="4.7.6" />
   </ItemGroup>
   <ItemGroup>
@@ -66,6 +67,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Update="style.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="UserGuide.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
