@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Configuration;
 using System.IO;
 
@@ -7,7 +6,7 @@ namespace XoClock
 {
     class StyleConfig
     {
-        private const string STYLE_JSON_FILE = "style.json";
+        private const string STYLE_JSON_FILE_DEFAULT = "style.json";
         public string FontColor;
         public string TextDropShadowColor;
         public string BackgroundImage;
@@ -17,15 +16,10 @@ namespace XoClock
         public double BorderThickness;
         public string BorderColor;
         public double BackgroundOpacity;
-        /// <summary>
-        /// if DevMode is set to true, configuration file is reloaded every 300ms
-        /// if DevMode is set to false, configuration file is loaded once at startup
-        /// </summary>
-        public bool DevMode;
 
         public static StyleConfig Load()
         {
-            var ret = LoadJson(STYLE_JSON_FILE);
+            var ret = LoadJson(STYLE_JSON_FILE_DEFAULT);
             return ret;
         }
 
@@ -36,7 +30,7 @@ namespace XoClock
             return ret;
         }
 
-        public static StyleConfig LoadLegacy()
+        private static StyleConfig LoadLegacy()
         {
             var ret = new StyleConfig();
             ret.FontColor = LoadString("FontColor");

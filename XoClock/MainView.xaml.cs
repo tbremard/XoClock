@@ -374,6 +374,9 @@ namespace XoClock
                     this.ShowInTaskbar = true;
                     Topmost = false;
                     break;
+                case Key.F5:
+                    LoadStyle();
+                    break;
                 case Key.Subtract:
                     OpacityDecrease();
                     break;

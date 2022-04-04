@@ -74,4 +74,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /Y $(ProjectDir)BgImage $(OutDir)BgImage" />
+  </Target>
 </Project>
