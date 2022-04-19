@@ -3,22 +3,22 @@ using System;
 using System.IO.Pipes;
 using System.Security.Principal;
 
-namespace XoClock
+namespace InterProcess
 {
-    public class PipelineClientService
+    public class RemoteProcess
     {
         private static ILogger _log = LogManager.GetCurrentClassLogger();
-        public static PipelineClientService Instance = new PipelineClientService();
+        public static RemoteProcess Instance = new RemoteProcess();
         NamedPipeClientStream _pipeClient;
         StreamString _stream;
         public bool IsConnected = false;
 
-        private PipelineClientService()
+        private RemoteProcess()
         {
             //Singleton
         }
 
-        public bool ConnectToServer()
+        public bool Connect()
         {
             _pipeClient = new NamedPipeClientStream(PipeConst.LOCAL_SERVER_NAME, 
                                                     PipeConst.XOCLOCK_PIPE_NAME,

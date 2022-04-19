@@ -1,8 +1,7 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 
-namespace XoClock
+namespace InterProcess
 {
     // Defines the data protocol for reading and writing strings on our stream.
     public class StreamString
@@ -30,9 +29,9 @@ namespace XoClock
         {
             byte[] outBuffer = streamEncoding.GetBytes(outString);
             int len = outBuffer.Length;
-            if (len > UInt16.MaxValue)
+            if (len > ushort.MaxValue)
             {
-                len = (int)UInt16.MaxValue;
+                len = ushort.MaxValue;
             }
             ioStream.WriteByte((byte)(len / 256));
             ioStream.WriteByte((byte)(len & 255));

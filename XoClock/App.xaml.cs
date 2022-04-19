@@ -1,4 +1,6 @@
-﻿using System;
+﻿using InterProcess;
+using System;
+using System.Threading;
 using System.Windows;
 
 namespace XoClock
@@ -25,9 +27,9 @@ namespace XoClock
         private void Execute(string commandText)
         {
             string upperCommand = commandText.Trim().ToUpper();
-            if (PipelineClientService.Instance.ConnectToServer())
+            if (RemoteProcess.Instance.Connect())
             {
-                PipelineClientService.Instance.SendCommand(upperCommand);
+                RemoteProcess.Instance.SendCommand(upperCommand);
             }
         }
     }

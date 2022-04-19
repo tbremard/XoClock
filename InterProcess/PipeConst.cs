@@ -1,4 +1,4 @@
-﻿namespace XoClock
+﻿namespace InterProcess
 {
     public class PipeConst
     {
