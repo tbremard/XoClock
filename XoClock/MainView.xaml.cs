@@ -278,7 +278,6 @@ namespace XoClock
                 currentRadius.BottomRight = _style.BottomCornerRadius;
             }
             MyBorder.CornerRadius = currentRadius;
-
         }
 
         private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -389,8 +388,8 @@ namespace XoClock
                     }
                     break;
                 case Key.F1:
-                    this.WindowState = WindowState.Maximized;
-                    this.ShowInTaskbar = false;
+                    WindowState = WindowState.Maximized;
+                    ShowInTaskbar = false;
                     MyBorder.CornerRadius = new CornerRadius(0);
                     MyBorder.Padding = new Thickness(0);
                     MyBorder.Margin = new Thickness(0);
@@ -399,14 +398,14 @@ namespace XoClock
                     break;
                 case Key.F2:
                 case Key.Escape:
-                    this.WindowState = WindowState.Normal;
-                    this.ShowInTaskbar = false;
+                    WindowState = WindowState.Normal;
+                    ShowInTaskbar = false;
                     ResetBorder();
                     Topmost = _lastTopMost;
                     break;
                 case Key.F3:
-                    this.WindowState = WindowState.Minimized;
-                    this.ShowInTaskbar = true;
+                    WindowState = WindowState.Minimized;
+                    ShowInTaskbar = true;
                     Topmost = false;
                     break;
                 case Key.F5:
@@ -632,7 +631,6 @@ namespace XoClock
                     _isCtrlDown = false;
                     _copyMode = false;
                     break;
-
             }
         }
     }

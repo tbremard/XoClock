@@ -1,6 +1,5 @@
 ﻿using InterProcess;
 using System;
-using System.Threading;
 using System.Windows;
 
 namespace XoClock
