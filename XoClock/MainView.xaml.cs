@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using System.IO;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Effects;
+using InterProcess;
 
 namespace XoClock
 {
@@ -18,8 +19,8 @@ namespace XoClock
         bool _isMoving = false;
         Point _lastPosition;
         bool _lastTopMost = true;
-        TimerModel model;
-        PipeServer server;
+        TimerModel _model;
+        CommandDispatcher _server;
         bool _isShiftDown = false;
         bool _isCtrlDown = false;
         bool _copyMode = false;
@@ -42,8 +43,8 @@ namespace XoClock
             LoadStyle();
             PositionOnTopRightCorner();
             var core = new TimerCore();
-            model = new TimerModel(core);
-            DataContext = model;
+            _model = new TimerModel(core);
+            DataContext = _model;
             StartCommandServerThread();
             StartBlinker();
         }
@@ -166,18 +167,52 @@ namespace XoClock
 
         private void PipeServerEntryPoint()
         {
-            server = new PipeServer(model);
+            _server = new CommandDispatcher();
+            _server.CommandReceived += _server_CommandReceived;
             bool isAlive = true;
             do
             {
-                if (!server.OpenPort())
+                if (!_server.Listen())
                 {
                     _log.Error("cannot open pipe server. Already instance running ?");
                     return;
                 }
-                server.HandleClient();
-                server.Close();
+                _server.HandleClient();
+                _server.Close();
             } while (isAlive);
+        }
+
+        private void _server_CommandReceived(object sender, CommandReceivedEventArgs e)
+        {
+            DispatchToModel(e.Command);
+        }
+
+        private void DispatchToModel(string command)
+        {
+            if (command == XoClockCommand.START_CHRONO.ToString())
+            {
+                _model.StartChrono();
+            }
+            if (command == XoClockCommand.STOP_CHRONO.ToString())
+            {
+                _model.StopChrono();
+            }
+            if (command == XoClockCommand.RESET_CHRONO.ToString())
+            {
+                _model.ResetChrono();
+            }
+            if (command == XoClockCommand.MODE_CHRONO.ToString())
+            {
+                _model.SetMode(ClockMode.Chrono);
+            }
+            if (command == XoClockCommand.MODE_CLOCK.ToString())
+            {
+                _model.SetMode(ClockMode.Clock);
+            }
+            if (command == XoClockCommand.KILL.ToString())
+            {
+                Application.Current.Dispatcher.InvokeShutdown();
+            }
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -243,13 +278,12 @@ namespace XoClock
                 currentRadius.BottomRight = _style.BottomCornerRadius;
             }
             MyBorder.CornerRadius = currentRadius;
-
         }
 
         private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            model.SwitchMode();
-            if (model.Mode == ClockMode.Clock)
+            _model.SwitchMode();
+            if (_model.Mode == ClockMode.Clock)
             {
                 TxtDate.Visibility = Visibility.Visible;
             }
@@ -275,9 +309,9 @@ namespace XoClock
             switch (key)
             {
                 case Key.Space:
-                    if (model.Mode == ClockMode.Chrono)
+                    if (_model.Mode == ClockMode.Chrono)
                     {
-                        model.SwitchChronometerStatus();
+                        _model.SwitchChronometerStatus();
                     }
                     break;
                 case Key.LeftCtrl:
@@ -292,7 +326,7 @@ namespace XoClock
                     //if (Keyboard.Modifiers == ModifierKeys.Control) < could also use this
                     if (_isCtrlDown)
                     {
-                        if (model.Mode == ClockMode.Chrono)
+                        if (_model.Mode == ClockMode.Chrono)
                         {
                             Clipboard.SetText(TxtTime.Text.ToString());
                             FlashBorder();
@@ -354,8 +388,8 @@ namespace XoClock
                     }
                     break;
                 case Key.F1:
-                    this.WindowState = WindowState.Maximized;
-                    this.ShowInTaskbar = false;
+                    WindowState = WindowState.Maximized;
+                    ShowInTaskbar = false;
                     MyBorder.CornerRadius = new CornerRadius(0);
                     MyBorder.Padding = new Thickness(0);
                     MyBorder.Margin = new Thickness(0);
@@ -364,14 +398,14 @@ namespace XoClock
                     break;
                 case Key.F2:
                 case Key.Escape:
-                    this.WindowState = WindowState.Normal;
-                    this.ShowInTaskbar = false;
+                    WindowState = WindowState.Normal;
+                    ShowInTaskbar = false;
                     ResetBorder();
                     Topmost = _lastTopMost;
                     break;
                 case Key.F3:
-                    this.WindowState = WindowState.Minimized;
-                    this.ShowInTaskbar = true;
+                    WindowState = WindowState.Minimized;
+                    ShowInTaskbar = true;
                     Topmost = false;
                     break;
                 case Key.F5:
@@ -597,7 +631,6 @@ namespace XoClock
                     _isCtrlDown = false;
                     _copyMode = false;
                     break;
-
             }
         }
     }

@@ -2,24 +2,22 @@
 using System.IO;
 using System.IO.Pipes;
 using System.Threading;
-using System.Windows;
 using NLog;
 
-namespace XoClock
+namespace InterProcess
 {
-    internal class PipeServer
+    public class CommandDispatcher
     {
+        public event EventHandler<CommandReceivedEventArgs> CommandReceived;
         private static ILogger _log = LogManager.GetCurrentClassLogger();
-        private TimerModel _viewModel;
 
         NamedPipeServerStream _pipeServer;
 
-        public PipeServer(TimerModel viewModel)
+        public CommandDispatcher()
         {
-            this._viewModel = viewModel;
         }
 
-        public bool OpenPort()
+        public bool Listen()
         {
             bool ret = true;
             try
@@ -46,9 +44,9 @@ namespace XoClock
                 var streamString = new StreamString(_pipeServer);
                 streamString.WriteString(PipeConst.XOCLOCK_SERVER_ID);
                 string command = streamString.ReadString();
-                _log.Debug("Rx cmd: '{0}' on thread[{1}] by user: {2}",
-                                    command, threadId, _pipeServer.GetImpersonationUserName());
-                DispatchToModel(command);
+                string user = _pipeServer.GetImpersonationUserName();
+                _log.Debug($"Rx cmd: '{command}' by user: {user}");
+                OnCommandReceived(command);
             }
             catch (IOException e)
             {
@@ -57,39 +55,19 @@ namespace XoClock
             return true;
         }
 
+        private void OnCommandReceived(string command)
+        {
+            if (CommandReceived != null)
+            {
+                CommandReceived(this, new CommandReceivedEventArgs(command));
+            }
+        }
+
         public bool Close()
         {
             _pipeServer.Close();
             _pipeServer.Dispose();
             return true;
-        }
-
-        private void DispatchToModel(string command)
-        {
-            if (command == XoClockCommand.START_CHRONO.ToString())
-            {
-                _viewModel.StartChrono();
-            }
-            if (command == XoClockCommand.STOP_CHRONO.ToString())
-            {
-                _viewModel.StopChrono();
-            }
-            if (command == XoClockCommand.RESET_CHRONO.ToString())
-            {
-                _viewModel.ResetChrono();
-            }
-            if (command == XoClockCommand.MODE_CHRONO.ToString())
-            {
-                _viewModel.SetMode(ClockMode.Chrono);
-            }
-            if (command == XoClockCommand.MODE_CLOCK.ToString())
-            {
-                _viewModel.SetMode(ClockMode.Clock);
-            }
-            if (command == XoClockCommand.KILL.ToString())
-            {
-                Application.Current.Dispatcher.InvokeShutdown();
-            }
         }
     }
 }
