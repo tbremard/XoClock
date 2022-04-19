@@ -4,3 +4,6 @@
 /XoClock/obj
 /XoClock/bin/Debug
 /XoClock/bin/Release/
+
+/*/obj/
+/*/bin/

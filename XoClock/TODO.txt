@@ -1,3 +1,2 @@
-﻿Configure background color, foreground color
-Set alarms via right click
-Get output via pipe
+﻿Set alarms via right click
+Get Time output via pipe

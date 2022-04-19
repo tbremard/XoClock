@@ -84,8 +84,7 @@ namespace XoClock
                 if (chronometerValue.Minutes > 0)
                     s += chronometerValue.Minutes.ToString("D2") + "'";
                 int centiseconds = chronometerValue.Milliseconds / 10;
-                s += chronometerValue.Seconds.ToString("D2") +"\"" +
-                    centiseconds.ToString("D2");
+                s += chronometerValue.Seconds.ToString("D2") +"\"" + centiseconds.ToString("D2");
             }
             DisplayTime = s;
         }
