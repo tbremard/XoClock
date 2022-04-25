@@ -1,9 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="XoClock.MainView">
-    <Position X="3.5" Y="1.25" Width="3.75" />
+    <Position X="4" Y="1.25" Width="3.75" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>QoZrDAUgAIAYAFAAQgJBIBiIACQBGgGAgAAAADAAJIA=</HashCode>
@@ -16,6 +18,9 @@
   </Class>
   <Class Name="XoClock.TimerModel">
     <Position X="9.25" Y="1.25" Width="3.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAAQAAAIBAAkAAIggARAMAgAAAAAAQAAQAgAAAEAA=</HashCode>
       <FileName>Code\TimerModel.cs</FileName>
@@ -25,7 +30,15 @@
     </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
-  <Interface Name="XoClock.ITimerCore">
+  <Class Name="XoClock.TimerCore">
+    <Position X="14.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAgAAAAAAAAACAAAAgAAAAAAQAA=</HashCode>
+      <FileName>Code\TimerCore.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="XoClock.ITimerCore" Collapsed="true">
     <Position X="14.5" Y="1.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>

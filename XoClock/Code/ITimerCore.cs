@@ -1,10 +1,10 @@
-﻿namespace XoClock
-{
-    public delegate void TickEventHandler(object sender, TickEventArgs e);
+﻿using System;
 
+namespace XoClock
+{
     internal interface ITimerCore
     {
-        event TickEventHandler Tick;
+        event EventHandler<TickEventArgs> Tick;
         int PeriodInMs { get; set; }
     }
 }

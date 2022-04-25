@@ -1,2 +1,13 @@
-﻿Set alarms via right click
-Get Time output via pipe
+﻿Download via github
+Demo full features via user Guide
+Uml class diagram
+MVVM / View Model Core
+Binding
+Core events for time
+keyboard handling on view
+nlog logger
+Property changed filled
+BgImage styling
+Pipe client server
+Event trigering
+github workflow

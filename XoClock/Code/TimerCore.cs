@@ -5,7 +5,7 @@ namespace XoClock
 {
     public class TimerCore : ITimerCore
     {
-        public event TickEventHandler Tick;
+        public event EventHandler<TickEventArgs> Tick;
         private readonly Timer _timer;
         private int _periodInMs;
 
@@ -24,14 +24,14 @@ namespace XoClock
 
         public TimerCore()
         {
-            _timer = new Timer(MyTimerCallback);
+            _timer = new Timer(OnTick);
             PeriodInMs = 1000;
         }
 
-        void MyTimerCallback(object state)
+        void OnTick(object state)
         {
-            var args = new TickEventArgs(DateTime.Now);
-            Tick?.Invoke(this, args);
+            var e = new TickEventArgs(DateTime.Now);
+            Tick?.Invoke(this, e);
         }
     }
 }

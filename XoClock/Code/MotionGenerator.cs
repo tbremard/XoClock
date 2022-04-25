@@ -1,4 +1,5 @@
-﻿namespace XoClock
+﻿using NLog;
+namespace XoClock
 {
     class MotionGenerator
     {
@@ -8,7 +9,6 @@
         private const int MOVE_FAST_SPEED = 10;
         private const int MOVE_SLOW_SPEED = 1;
         int _counter = 0;
-
 
         public double Continue()
         {
