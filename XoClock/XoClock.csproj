@@ -15,6 +15,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\bin\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <None Remove="BgImage\black-grid.jpg" />
     <None Remove="Fonts\braciola ms.ttf" />
@@ -78,6 +81,6 @@
     </None>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /Y $(ProjectDir)BgImage $(OutDir)BgImage" />
+    <Exec Command="echo Copying images to $(TargetDir)&#xD;&#xA;xcopy /Y $(ProjectDir)BgImage $(TargetDir)BgImage" />
   </Target>
 </Project>

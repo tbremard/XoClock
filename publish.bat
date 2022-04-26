@@ -1,1 +1,1 @@
-dotnet publish XoClock_2019.sln -c Release --output ./bin
+dotnet publish XoClock.sln -c Release --output ./bin
