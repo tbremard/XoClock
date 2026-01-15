@@ -49,7 +49,8 @@ jobs:
       run: dotnet test $env:Test_Project_Path
 
     - name: publish
-      run: dotnet publish XoClock.sln -c Release --output ./bin
+#     run: dotnet publish XoClock.sln -c Release --output ./bin
+      run: dotnet publish XoClock\XoClock.csproj -c Release -f net8.0-windows
       
     - name: Create Zip Archive
       uses: thedoctor0/zip-release@master
