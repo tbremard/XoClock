@@ -34,8 +34,25 @@ namespace XoClock
 
         public MainView()
         {
-            InitializeComponent();
-            _motionGenerator = new MotionGenerator();
+            try
+            {
+                InitializeComponent();
+                _motionGenerator = new MotionGenerator();
+            }
+            catch (Exception ex)
+            {
+                string errMsg;
+                if (ex.InnerException != null)
+                {
+                    errMsg = ex.InnerException.Message;
+                }
+                else
+                {
+                    errMsg = ex.Message;
+                }
+                _log.Error(ex, errMsg);
+                MessageBox.Show(errMsg, "XoClock: Fatal error during initialization", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

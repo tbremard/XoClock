@@ -1,16 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>netcoreapp3.1;net8.0-windows</TargetFrameworks>	
     <UseWPF>true</UseWPF>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ApplicationIcon>clock.ico</ApplicationIcon>
     <Copyright>Thierry Bremard - t.bremard@gmail.com</Copyright>
     <Authors>Thierry Bremard - t.bremard@gmail.com</Authors>
     <Description>Desktop Clock and Chronometer</Description>
-    <FileVersion>2022.03.11.1</FileVersion>
-    <AssemblyVersion>2022.03.11.1</AssemblyVersion>
-    <Version>2022.03.11.1</Version>
+    <FileVersion>2026.01.01.1</FileVersion>
+    <AssemblyVersion>2026.01.01.1</AssemblyVersion>
+    <Version>2026.01.01.1</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -25,7 +25,6 @@
     <None Remove="Fonts\software_tester_7.ttf" />
     <None Remove="Fonts\Terminator.ttf" />
     <None Remove="NLog.config" />
-    <None Remove="BgImage\black-gradient.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Fonts\braciola ms.ttf">
@@ -47,12 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="BgImage\black-grid.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="BgImage\black-gradient.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -81,6 +74,6 @@
     </None>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="echo Copying images to $(TargetDir)&#xD;&#xA;xcopy /Y $(ProjectDir)BgImage $(TargetDir)BgImage" />
+    <Exec Command="echo Copying images to $(TargetDir)&#xD;&#xA;xcopy /Y $(ProjectDir)BgImage\ $(TargetDir)BgImage\" />
   </Target>
 </Project>

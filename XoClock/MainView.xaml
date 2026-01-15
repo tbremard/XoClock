@@ -25,12 +25,10 @@
         KeyDown="Window_KeyDown"
         KeyUp="Window_KeyUp">
        <Border Name="MyBorder" BorderBrush="DimGray" BorderThickness="3" CornerRadius="0 0 20 20" Margin="0 0 5 5">
+        <!--  DO NOT REFERENCE BORDER BACKGROUND AS IT IS POST BUILT ADDED AND NOT RESSOURCE BUILT-->
             <Border.Effect>
                 <DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="4"></DropShadowEffect>
             </Border.Effect>
-            <Border.Background>
-                <ImageBrush ImageSource="BgImage/black-gradient.jpg" TileMode="Tile" />
-            </Border.Background>
             <Viewbox Stretch="Uniform" Margin="0" Name="viewbox">
             <StackPanel>
                 <TextBlock Name="TxtTime"
@@ -49,7 +47,7 @@
                     </TextBlock.Effect>
                 </TextBlock>
                 <TextBlock Name="TxtDate"
-                       TextOptions.TextRenderingMode="Grayscale" 
+                       TextOptions.TextRenderingMode="ClearType" 
                        HorizontalAlignment="Center" 
                        VerticalAlignment="Center"
                        ClipToBounds="True"  
