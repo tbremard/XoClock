@@ -1,1 +1,1 @@
-dotnet publish XoClock.sln -c Release --output ./bin
+dotnet publish XoClock\XoClock.csproj -c Release -f net8.0-windows
